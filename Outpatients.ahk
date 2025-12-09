@@ -52,7 +52,7 @@ Numpad0:: {
     MsgBox("❌ Tab with title containing '" partialTabTitle "' not found.")
 }
 
-; Open Powerchart and navigate to documentation
+; Goto Powerchart and navigate to documentation
 Numpad1:: {
     SetTitleMatchMode(2)
 
@@ -138,11 +138,11 @@ Numpad1:: {
     Click()
 }
 
-; Return to Revenue Cycle window and paste MRN
+; Goto Revenue Cycle window and paste MRN
 Numpad2:: {
     SetTitleMatchMode(2)
 
-    if WinExist("Revenue Cyc") {
+    if WinExist("Revenue Cycle") {
         WinActivate()
     } else {
         MsgBox("Window not found")
@@ -154,6 +154,44 @@ Numpad2:: {
     Sleep(200)
     Send("{Enter}")
     Sleep(500)
+    Send("{Enter}")
+}
+
+; Goto Appointment Book window and paste MRN
+Numpad3:: {
+    SetTitleMatchMode(2)
+
+    if WinExist("Standard Patient Enquiry") { ; Name might look different if the window is focused, this will still target it
+        WinActivate()
+    } else {
+        MsgBox("Window not found")
+        Return
+    }
+
+    ; Close any open windows within
+    ; Does not work in script for some reason however manually pressing Esc does? nothing bad comes of this however so if there is still a window open at run just run again
+    Send("{Esc}")
+    Sleep(50)
+    Send("{Esc}")
+    Sleep(50)
+    Send("{Esc}")
+    Sleep(50)
+
+    ; Click '...'
+    Click(280, 261)
+    Sleep(500) ; Window can be slow
+
+    ; Click 'Reset'
+    Click(156, 530)
+    Sleep(200)
+
+    ; Paste and enter MRN
+    Send("^v")
+    Sleep(200)
+    Send("{Enter}")
+    Sleep(200)
+    Send("{Enter}")
+    Sleep(200)
     Send("{Enter}")
 }
 
