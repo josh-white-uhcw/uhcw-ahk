@@ -37,8 +37,10 @@ Numpad0:: {
             Send("{Down}")
             Send("^{Left}")
             Send("^{Left}")
-            Send("^{Left}")
-            Send("^{Left}")
+            Sleep(100)
+            if !legacySheet { ; if legacySheet is anything excluding 'true', it will assume attendance ID is present and move across to the MRN
+                Send("{Right}")
+            }
             Sleep(100)
             Send("^{c}")
             return
@@ -65,6 +67,12 @@ Numpad1:: {
 
     Click(1778, 112)
     Sleep(200)
+
+    ; Check clipboard
+    If InStr(A_Clipboard, "COPY"){
+        MsgBox("Clipboard failed to copy!")
+        Return
+    }
     
     ; Pastes into searchbar and opens patient search
     Send("^v")
@@ -76,7 +84,7 @@ Numpad1:: {
     SetTitleMatchMode(2)
 
     ; Wait for either relationship or encounter window
-    ; yes there are two separate searches for encounter window, but for now they both work so ¯\_(ツ)_/¯
+    ; yes there are two separate searches for encounter window, but for now it works so ¯\_(ツ)_/¯
 
     windowFound := ""
     startTime := A_TickCount
@@ -104,7 +112,6 @@ Numpad1:: {
         ; Now wait for encounter window
         if WinWait("Selec", , 5) {
             WinActivate("Selec")
-        Sleep(200)
         
         ; Keep sending Enter until window closes
         while WinExist("Selec") {
@@ -117,13 +124,13 @@ Numpad1:: {
 ; Handle encounter window if found (skip relationship)
     else if (windowFound = "Encounter") {
         WinActivate("Selec")
-        Sleep(200)
+        Sleep(50)
         
         ; Keep sending Enter until window closes
         while WinExist("Selec") {
             WinActivate("Selec")
             Send("{Enter}")
-            Sleep(200)
+            Sleep(100)
         }
     }
     ; Neither window found

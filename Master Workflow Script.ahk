@@ -47,6 +47,7 @@ partialAccessTitle  := "Access"    ; PM Office window name
 partialBrowserTitle := "edge"   ; replace 'Edge' with your browser of choice
 partialTabTitle := "xlsx"   ; replace 'xlsx' with the name of the spreadsheet used if multiple are open, keeping it as xlsx is fine most of the time
 maxTabSwitches := 15    ; How many tabs should be cycled before giving up?
+legacySheet := true ; set to true if you hide attendance ID column OR if the sheet your using does not contain it. set to false if attendance ID is present.
 initials := "Josh"  ; Name in sheet?
 
 ; --- Hotkey to kill the script instantly ---
