@@ -1,4 +1,12 @@
-﻿; Script to test AHK functionality
+﻿#Include ../Master Workflow Script.ahk
+
+; Script to test AHK functionality
 Esc:: {
-    ToolTip("Working")
+    MsgBox("a")
+    if !betaTesting {
+        MsgBox("b")
+        return
+    }
+
+    MsgBox("c")
 }

@@ -17,5 +17,6 @@ FindTab() {
     }
 
     ToolTip()
+    MsgBox("Could Not Find Tab - Make sure it's open and the variables have the right names and length.")
     return false
 }

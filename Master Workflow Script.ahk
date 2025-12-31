@@ -1,24 +1,28 @@
 #Requires AutoHotkey v2.0
 
+#MaxThreadsBuffer True
+#MaxThreads 1
+
 ; Info
 
-; This script is used as a info guide to the sub-scripts and contains extra info to be aware of. It does not need to be opened alongside the others as it is auto-#included. 
+; This script is used as a info guide to the sub-scripts and contains extra info to be aware of.
+; It does not need to be opened alongside the others as it is auto-#included. 
 ; Please note whats below, but keep in mind it is not absolute, some things may be changed without being updated here.
 
 ; PREREQS - IMPORTANT
 
 ; - turn numlock on
 ; - note the kill command at the bottom of this page incase of immediate need to stop
-; - for appointment book open the "standard patient enquiry" window before use (the eye icon) and be in the "Person" tab. it helps to enter the start date beforehand too
+; - if using appointment book it needs the "standard patient enquiry" window and "Person" tab open. it helps to enter the start date beforehand too
 ; - enter a MRN once manually on each app before using the script, as the apps are slow on first search which can make the script act weird
 ; - change the variables listed at the bottom of this page to match your needs (browser name, initials, etc)
 ; - do not use more than one script at a time (excluding this one and clippy), Hotkeys may conflict and other similar issues.
 ; - don't use any scripts in the beta or deprecated folder without setting up with me first, as they are basically unstable or require a very specific undocumented setup.
-; - MOST IMPORTANTLY - This is not a script to do your work for you, it merely assists. It is some of the most spagetti code I have ever written and will probably mess something up the moment you look away so pay attention and use with caution.
+; --- Most importantly ---- be careful, this is some of the worst code ever written by man, it will destroy anything in its path
 
 ; CURRENT KEYS
 
-; - Master Workflow Script
+; - Master Workflow Script (global)
 ; - ` (backtick) - Kill script(s) immediately
 
 ; - Clippy
@@ -50,12 +54,13 @@
 
 ; - Variables
 partialBrowserTitle := "edge"   ; replace 'Edge' with your browser of choice
-partialTabTitle := "xlsx"   ; replace 'xlsx' with the name of the spreadsheet used if multiple are open, keeping it as xlsx is fine most of the time
-maxTabSwitches := 5    ; How many tabs should be checked before giving up?
+partialTabTitle := "xlsx"   ; change from 'xlsx' to a more specific name like 'report.xlsx' if you hop between multiple sheets
+maxTabSwitches := 5    ; How many tabs should be checked before giving up finding the sheet?
+betaTesting := false ; run the WIP version of some macros, not really worth it to use. this is just for me to toggle between work and development
 legacySheet := false ; set to true if you hide attendance ID column OR if the sheet your using does not contain it. set to false if attendance ID is present.
 initials := "Josh"  ; Name in sheet?
 
 ; --- Hotkey to kill the script instantly ---
-`:: {   ; Backtick - next to 1
+`:: {   ; Backtick - the key next to 1
     ExitApp()
 }
