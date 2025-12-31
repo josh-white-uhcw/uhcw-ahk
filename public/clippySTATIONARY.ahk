@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-#Include ./Master Workflow Script.ahk
+#Include ../Master Workflow Script.ahk
 
 ; Clipboard rules
 
