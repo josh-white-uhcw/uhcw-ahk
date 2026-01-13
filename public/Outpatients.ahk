@@ -2,9 +2,9 @@
 #Include ../Master Workflow Script.ahk
 
 #Include sub-processes/outpatients/enterOutcome.ahk
-#Include sub-processes/outpatients/hwnd.ahk
+#Include sub-processes/hwnd.ahk
 #Include sub-processes/outpatients/tab.ahk
-#Include sub-processes/outpatients/windowCheck.ahk
+#Include sub-processes/windowCheck.ahk
 
 #MaxThreadsBuffer True
 #MaxThreads 1
@@ -134,34 +134,7 @@ Numpad2:: {
     Sleep(500)
     Send("{Enter}")
 
-    if !betaTesting {
-        return
-    }
-
-    Sleep(500)
-    ; detecting the color of 'file' selection to know when to navigate to past appointments.
-    CoordMode "Pixel", "Window"
-    targetColor := 0xCCE8FF
-    WinActivate "Rev"
-
-    Loop {
-        color := PixelGetColor(27,27)
-
-        if (color = targetColor)
-            break
-
-        Send "{Alt}"
-        Sleep 200
-    }
-
-    Sleep(50)
-    Send("v")
-    Sleep(50)
-    Send("o")
-    Sleep(50)
-    Send("{Enter}")
-    Sleep(50)
-    Send("p")
+    ; No need to add naviagation to past appointments, as you can set that manually in Revenue Cycle in View > Perspective Layout > Save
 }
 
 ; Goto Appointment Book window and paste MRN

@@ -7,7 +7,7 @@ FindTab() {
         currentTitle := WinGetTitle("A")
         ToolTip("Current window title: " currentTitle)
 
-        if InStr(currentTitle, outpatientTabTitle) {
+        if InStr(currentTitle, eReferralTabTitle) {
             ToolTip()
             return true
         }

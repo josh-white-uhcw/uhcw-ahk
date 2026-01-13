@@ -53,11 +53,13 @@
 ; - Numpad7 - Goes to PM Office and opens up the encounter search window (peak laziness)
 
 ; - Variables
-partialBrowserTitle := "edge"   ; replace 'Edge' with your browser of choice
-partialTabTitle := "xlsx"   ; change from 'xlsx' to a more specific name like 'report.xlsx' if you hop between multiple sheets
-maxTabSwitches := 5    ; How many tabs should be checked before giving up finding the sheet?
-betaTesting := false ; run the WIP version of some macros, not really worth it to use. this is just for me to toggle between work and development
-legacySheet := false ; set to true if you hide attendance ID column OR if the sheet your using does not contain it. set to false if attendance ID is present.
+partialBrowserTitle := "edge"       ; replace 'Edge' with your browser of choice
+outpatientTabTitle := "new report"  ; change from 'new report' to whatever is in the title of your spreadsheet tab if you need to be more specific
+eReferralTabTitle := "eRS"
+maxTabSwitches := 10    ; How many tabs should be checked before giving up finding the sheet?
+triageToggle := true    ; if true will add ' - Awaiting triage' to e-referral notes. if false it will not.
+betaTesting := false    ; run the WIP version of some macros, not really worth it to use. this is just for me to toggle between work and development
+legacySheet := false    ; set to true if you hide attendance ID column OR if the sheet your using does not contain it. set to false if attendance ID is present.
 initials := "Josh"  ; Name in sheet?
 
 ; --- Hotkey to kill the script instantly ---
