@@ -6,10 +6,7 @@
 #Include sub-processes/outpatients/tab.ahk
 #Include sub-processes/windowCheck.ahk
 
-#MaxThreadsBuffer True
-#MaxThreads 1
-
-; Outpatients Validation Hotkeys
+Critical ; Allows keys to be queued one after another
 
 ; Get New MRN from browser tab
 Numpad0:: {

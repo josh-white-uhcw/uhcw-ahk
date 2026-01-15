@@ -1,26 +1,30 @@
 #Requires AutoHotkey v2.0
 
-#MaxThreadsBuffer True
-#MaxThreads 1
-
+; --------------------
 ; Info
+; --------------------
 
 ; This script is used as a info guide to the sub-scripts and contains extra info to be aware of.
 ; It does not need to be opened alongside the others as it is auto-#included. 
 ; Please note whats below, but keep in mind it is not absolute, some things may be changed without being updated here.
 
-; PREREQS - IMPORTANT
+; --------------------
+; PREREQS / NOTES - IMPORTANT
+; --------------------
 
 ; - turn numlock on
-; - note the kill command at the bottom of this page incase of immediate need to stop
+; - note the kill command at the bottom of this page incase of immediate need to stop (shouldn't need to happen, I've added safeguards to everything in the public folder.)
 ; - if using appointment book it needs the "standard patient enquiry" window and "Person" tab open. it helps to enter the start date beforehand too
 ; - enter a MRN once manually on each app before using the script, as the apps are slow on first search which can make the script act weird
 ; - change the variables listed at the bottom of this page to match your needs (browser name, initials, etc)
-; - do not use more than one script at a time (excluding this one and clippy), Hotkeys may conflict and other similar issues.
+; - do not use more than one script at a time (excluding clippys), Hotkeys may conflict and other similar issues.
+; - clippyADAPT may be placed in a weird spot when first copying, supposed to be anchored to the right but sometimes dont work.
 ; - don't use any scripts in the beta or deprecated folder without setting up with me first, as they are basically unstable or require a very specific undocumented setup.
-; --- Most importantly ---- be careful, this is some of the worst code ever written by man, it will destroy anything in its path
+; --- Most importantly ---- be careful, chances are this code will do something unexpected to you but totally normal for me, so sorry in advance for lack of documentation.
 
+; --------------------
 ; CURRENT KEYS
+; --------------------
 
 ; - Master Workflow Script (global)
 ; - ` (backtick) - Kill script(s) immediately
@@ -52,15 +56,23 @@
 ; - ALT + V - In Word doc, enters title format with MRN and initials
 ; - Numpad7 - Goes to PM Office and opens up the encounter search window (peak laziness)
 
+; --------------------
 ; - Variables
+; --------------------
+
+; Report opening
 partialBrowserTitle := "edge"       ; replace 'Edge' with your browser of choice
 outpatientTabTitle := "new report"  ; change from 'new report' to whatever is in the title of your spreadsheet tab if you need to be more specific
 eReferralTabTitle := "eRS"
 maxTabSwitches := 10    ; How many tabs should be checked before giving up finding the sheet?
-triageToggle := true    ; if true will add ' - Awaiting triage' to e-referral notes. if false it will not.
-betaTesting := false    ; run the WIP version of some macros, not really worth it to use. this is just for me to toggle between work and development
+
+; Report modifiers
 legacySheet := false    ; set to true if you hide attendance ID column OR if the sheet your using does not contain it. set to false if attendance ID is present.
 initials := "Josh"  ; Name in sheet?
+
+; Clipboard
+clipboardDistance := 10 ; How far down on the screen should the clipboards start appearing? 0 = top of screen, 10 = 200px down
+
 
 ; --- Hotkey to kill the script instantly ---
 `:: {   ; Backtick - the key next to 1

@@ -3,9 +3,9 @@
 
 ; Clipboard rules
 
-; Clipboard slots (1-9), enter the text into the quotes and the corresponding function key will paste. example below.
-global ClipSlot1 := "Cancelled by DSG team"
-global ClipSlot2 := "Rebooked by DSG team"
+; Clipboard slots (1-9) with auto-increment, each copy will replace the next slot in a cycle, allowing up to 9 items at a time.
+global ClipSlot1 := ""
+global ClipSlot2 := ""
 global ClipSlot3 := ""
 global ClipSlot4 := ""
 global ClipSlot5 := ""
@@ -13,6 +13,43 @@ global Clipslot6 := ""
 global ClipSlot7 := ""
 global ClipSlot8 := ""
 global ClipSlot9 := ""
+global CurrentClipSlot := 1
+global PreviousClip := ""
+
+; Timer to monitor clipboard changes
+SetTimer(ClipboardMonitor, 500)
+
+ClipboardMonitor() {
+    global CurrentClipSlot, ClipSlot1, ClipSlot2, ClipSlot3, ClipSlot4, ClipSlot5
+    global ClipSlot6, ClipSlot7, ClipSlot8, ClipSlot9, PreviousClip
+    
+    currentClip := A_Clipboard
+    
+    ; Only process if clipboard changed
+    if (currentClip != PreviousClip && currentClip != "") {
+        PreviousClip := currentClip
+        
+        ; Save to current slot
+        switch CurrentClipSlot {
+            case 1: ClipSlot1 := currentClip
+            case 2: ClipSlot2 := currentClip
+            case 3: ClipSlot3 := currentClip
+            case 4: ClipSlot4 := currentClip
+            case 5: ClipSlot5 := currentClip
+            case 6: ClipSlot6 := currentClip
+            case 7: ClipSlot7 := currentClip
+            case 8: ClipSlot8 := currentClip
+            case 9: ClipSlot9 := currentClip
+        }
+        
+        ; Show tooltip at position relative to slot number
+        yPos := (CurrentClipSlot - 1) * 20
+        ToolTip(currentClip, 1920, yPos, CurrentClipSlot)
+        
+        ; Increment slot and loop back to 1
+        CurrentClipSlot := Mod(CurrentClipSlot, 9) + 1
+    }
+}
 
 ; Paste from slot 1
 F1:: {
