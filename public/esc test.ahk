@@ -8,5 +8,9 @@ Esc:: {
 }
 
 F1:: {
-    MsgBox("c")
+    Send(A_MM)
+    Send("/")
+    Send(A_DD)
+    Send("/")
+    Send(A_YYYY)
 }

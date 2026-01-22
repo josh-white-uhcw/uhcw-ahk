@@ -9,10 +9,15 @@ enterOutcome(outcome) {
     Send("{Right}")
     Send("3")
     Send("{Right}")
-    Send(initials)
+    Send(initials) ; all scripts include the master script, which applies the variables here too - ignore the warning
     Send("{Right}")
-    Send("^{;}")
+    
+    Send(A_MM)
+    Send("/")
+    Send(A_DD)
+    Send("/")
+    Send(A_YYYY)
+
     Sleep(100)
-    Send("{Enter}")
-    Send("{Up}")
+    Send("{Esc}")
 }
