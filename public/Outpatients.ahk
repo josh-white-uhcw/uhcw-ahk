@@ -38,7 +38,10 @@ Numpad1:: {
     }
 
     ; Search for "File" menu button
-    lookFor("MRN-Search", 20, 10)
+    if lookFor("MRN-Search", 20, 10) {
+        MsgBox("Could not find MRN search button")
+        return
+    }
     
     ; Check clipboard
     If InStr(A_Clipboard, "COPY"){

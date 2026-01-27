@@ -1,11 +1,15 @@
-All info is in the Master script! It's important to read there before running anything.
+All info is in the Master GUI, just run that file! It's important to read there before running anything.
 
 Download AHK here:
 https://www.autohotkey.com/download/ahk-v2.exe
 
+Be sure to run the following command daily to get the up-to-date:
+```
+git pull
+```
+Just be sure to copy your variables from Master Workflow Script so you don't lose them
+
 TODO:
-fix numpad1 horrible code
 reorganise folder/file structure
-properly incorperate all finished /beta/ processes
-add var for toolbars present in powerchart for searchbar
 make appointment book opening cleaner / add more checks and catches to open if its not perfectly set up
+properly incorperate all finished /beta/ processes

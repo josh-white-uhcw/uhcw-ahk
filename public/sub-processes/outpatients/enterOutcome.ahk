@@ -18,6 +18,7 @@ enterOutcome(outcome) {
     Send("/")
     Send(A_YYYY)
 
-    Sleep(100)
-    Send("{Esc}")
+    Sleep(150)
+    Send("{Enter}")
+    Send("{Up}")
 }

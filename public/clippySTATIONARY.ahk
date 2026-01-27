@@ -6,7 +6,7 @@
 ; Clipboard slots (1-9), enter the text into the quotes and the corresponding function key will paste. example below.
 global ClipSlot1 := "Cancelled by DSG team"
 global ClipSlot2 := "Rebooked by DSG team"
-global ClipSlot3 := ""
+global ClipSlot3 := "Sleep Service - Respiratory Medicine - University Hospital Coventry - RKB"
 global ClipSlot4 := ""
 global ClipSlot5 := ""
 global Clipslot6 := ""

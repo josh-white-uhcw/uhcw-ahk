@@ -4,11 +4,32 @@
 #Include sub-processes/hwnd.ahk
 #Include sub-processes/ers/tab.ahk
 #Include sub-processes/windowCheck.ahk
+#Include sub-processes/lookFor.ahk
 
 ; Cycle for adding referrals
 addReferralCycle := 1
 
 ; ERS Hotkeys
+
+; open nhs num
+F12:: {
+    FindHwnd ; calls sub-processes/hwnd.ahk
+    Sleep(100)
+
+    FindTab ; calls sub-processes/ers/tab.ahk
+    Sleep(100)
+
+    lookFor("nhs-number", 120, 10)
+
+    If InStr(A_Clipboard, "COPY"){
+        MsgBox("Clipboard failed to copy!")
+        Return
+    }
+
+    Send("^a")
+    Send("^v")
+    Send("{Enter}")
+}
 
 ; Type clipboard as text (to bypass unpasteable inputs)
 ^+v::{ ; CTRL + SHIFT + V
@@ -100,22 +121,22 @@ Insert:: {
 
     ; Grab and enter serivce name
     else if (addReferralCycle = 5) {
-        FindHwnd ; calls sub-processes/hwnd.ahk
-        Sleep(100)
-
-        FindTab ; calls sub-processes/ers/tab.ahk
-        Sleep(100)
-
-        Send("{Right}")
-        Sleep(50)
-        Send("{Right}")
-        Sleep(50)
-        Send("{Right}")
-        Sleep(50)
-        Send("{Right}")
-        Sleep(50)
-        Send("^c")
-        Sleep(50)
+        ;FindHwnd() ; calls sub-processes/hwnd.ahk
+        ;Sleep(100)
+;
+        ;FindTab() ; calls sub-processes/ers/tab.ahk
+        ;Sleep(100)
+;
+        ;Send("{Right}")
+        ;Sleep(50)
+        ;Send("{Right}")
+        ;Sleep(50)
+        ;Send("{Right}")
+        ;Sleep(50)
+        ;Send("{Right}")
+        ;Sleep(50)
+        ;Send("^c")
+        ;Sleep(50)
 
         if !windowCheck("Add") {
         MsgBox("Window check failed")
@@ -130,7 +151,7 @@ Insert:: {
         Send("+{Tab}") 
         Sleep(50)
 
-        Send("^{v}")
+        Send("{F3}")
         Sleep(50)
 
         ;AwaitingTriage()
@@ -153,4 +174,25 @@ Insert:: {
 
         addReferralCycle := 1
     }
+}
+
+Home:: {
+    Send("+{Tab}")
+    Sleep(200)
+    Send("{Enter}")
+    Sleep(200)
+    Send("{Tab}")
+    Sleep(200)
+    Send("{Enter}")
+    Sleep(200)
+    Send("{Down}")
+    Send("{Down}")
+    Send("{Down}")
+    Sleep(200)
+    Send("{Enter}")
+    Sleep(200)
+    Send("{Tab}")
+    Send("{Tab}")
+    Sleep(200)
+    Send("{Enter}")
 }
