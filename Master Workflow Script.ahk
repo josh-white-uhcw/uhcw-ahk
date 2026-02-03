@@ -26,6 +26,7 @@ if FileExist(configPath) {
     legacySheet := IniRead(configPath, "Reports", "LegacySheet", "")
     initials := IniRead(configPath, "User", "Initials", "")
     clipboardDistance := IniRead(configPath, "User", "ClipboardDistance", "")
+    EmulationHyprland := IniRead(configPath, "User", "EmulationHyprland", "")
 } else {
     global partialBrowserTitle := "edge"
     global outpatientTabTitle := "new report"
@@ -34,4 +35,10 @@ if FileExist(configPath) {
     global legacySheet := false
     global initials := "DEFAULT NAME"
     global clipboardDistance := 10
+    global EmulationHyprland := false
 }
+
+; Hyprland emulation test
+;if EmulationHyprland(True) {
+;    ; this would do something, but it would break some of the current scripting currently.
+;}

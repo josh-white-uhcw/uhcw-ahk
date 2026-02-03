@@ -81,9 +81,10 @@ CreateSettingsTab(tab) {
         {type: "Edit", opts: "x+10 yp w100 vInitials", text: initials},
         {type: "Text", opts: "x+10 yp", text: "Clipboard Distance:"},
         {type: "Edit", opts: "x+10 yp w60 vClipboardDistance Number", text: clipboardDistance}
+        ,{type: "Checkbox", opts: "x30 y+10 vEmulationHyprland Checked" . EmulationHyprland, text: "Enable Hyprland Emulation Mode"}
     ])
 
-    mainGui.Add("Button", "x360 y+10 w120 h30", "Save Settings").OnEvent("Click", SaveSettings)
+    mainGui.Add("Button", "x360 y+30 w120 h30", "Save Settings").OnEvent("Click", SaveSettings)
 }
 
 ; ============================================================================
@@ -231,6 +232,8 @@ SaveSettings(*) {
     global legacySheet := Saved.LegacySheet
     global initials := Saved.Initials
     global clipboardDistance := Saved.ClipboardDistance
+    global EmulationHyprland := Saved.EmulationHyprland
+
     
     ; Save to INI file
     IniWrite(partialBrowserTitle, configPath, "Browser", "PartialBrowserTitle")
@@ -240,6 +243,7 @@ SaveSettings(*) {
     IniWrite(legacySheet, configPath, "Reports", "LegacySheet")
     IniWrite(initials, configPath, "User", "Initials")
     IniWrite(clipboardDistance, configPath, "User", "ClipboardDistance")
+    IniWrite(EmulationHyprland, configPath, "User", "EmulationHyprland")
     
     ToolTip("Settings saved!",,, 1)
     SetTimer(() => ToolTip(), -1000)
@@ -258,6 +262,7 @@ LoadSettings() {
     global legacySheet := IniRead(configPath, "Reports", "LegacySheet", "0")
     global initials := IniRead(configPath, "User", "Initials", "DEFAULT NAME")
     global clipboardDistance := IniRead(configPath, "User", "ClipboardDistance", "10")
+    global EmulationHyprland := IniRead(configPath, "User", "EmulationHyprland", "0")
 }
 
 SetDefaultSettings() {
@@ -268,4 +273,5 @@ SetDefaultSettings() {
     global legacySheet := "0"
     global initials := "DEFAULT NAME"
     global clipboardDistance := "10"
+    global EmulationHyprland := "0"
 }
