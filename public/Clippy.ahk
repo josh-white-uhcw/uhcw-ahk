@@ -3,20 +3,16 @@
 
 ; messy code, sorry, it works tho
 
-; Clipboard slots (1-9) with slot 1 always being the most recent
-global ClipSlot1 := ""
-global ClipSlot2 := ""
-global ClipSlot3 := ""
-global ClipSlot4 := ""
-global ClipSlot5 := ""
-global ClipSlot6 := ""
-global ClipSlot7 := ""
-global ClipSlot8 := ""
-global ClipSlot9 := ""
-global PreviousClip := ""
+if (AdaptionMode) {
+    ; Timer to monitor clipboard changes
+    SetTimer(ClipboardMonitor, 500)
+}
+else {
+    ToolTip("Adaption Mode is disabled. Clipboard monitoring is inactive.", 1920, 10)
+}
 
-; Timer to monitor clipboard changes
-SetTimer(ClipboardMonitor, 500)
+; Clipboard slots (1-9) with slot 1 always being the most recent
+global PreviousClip := ""
 
 ClipboardMonitor() {
     global ClipSlot1, ClipSlot2, ClipSlot3, ClipSlot4, ClipSlot5
@@ -89,6 +85,10 @@ F9:: Send(ClipSlot9)
 
 ; Clear all slots and tooltips
 F10:: {
+    if (!AdaptionMode) {
+        MsgBox("You cannot clear the clipboard in static mode.")
+        return
+    }
     global ClipSlot1, ClipSlot2, ClipSlot3, ClipSlot4, ClipSlot5
     global ClipSlot6, ClipSlot7, ClipSlot8, ClipSlot9, PreviousClip
     
@@ -106,3 +106,5 @@ F10:: {
     Loop 9
         ToolTip("", , , A_Index)
 }
+
+UpdateTooltips()

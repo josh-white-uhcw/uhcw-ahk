@@ -1,11 +1,9 @@
-#Requires AutoHotkey v2.0
+﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 
 ; ============================================================================
 ; GLOBAL VARIABLES
 ; ============================================================================
-global partialBrowserTitle, outpatientTabTitle, eReferralTabTitle
-global maxTabSwitches, legacySheet, initials, clipboardDistance
 global configPath := A_ScriptDir "\config.ini"
 
 ; ============================================================================
@@ -48,7 +46,7 @@ CreateScriptsTab(tab) {
     mainGui.Add("Button", "x+10 yp w150 h30", "Refresh List").OnEvent("Click", (*) => PopulateScripts())
     mainGui.Add("Button", "x+10 yp w140 h30", "Open Scripts Folder").OnEvent("Click", (*) => Run(A_ScriptDir "\public"))
     
-    mainGui.Add("Text", "x20 y+10", "Quick Actions:")
+    mainGui.Add("Text", "x20 y+10", "Quick Actions: (BROKEN DONT USE)")
     mainGui.Add("Button", "x20 y+5 w220 h30", "Send DQ Action Message").OnEvent("Click", SendDQMessage)
 }
 
@@ -80,11 +78,34 @@ CreateSettingsTab(tab) {
         {type: "Text", opts: "x30 yp+20", text: "Your Initials:"},
         {type: "Edit", opts: "x+10 yp w100 vInitials", text: initials},
         {type: "Text", opts: "x+10 yp", text: "Clipboard Distance:"},
-        {type: "Edit", opts: "x+10 yp w60 vClipboardDistance Number", text: clipboardDistance}
-        ,{type: "Checkbox", opts: "x30 y+10 vEmulationHyprland Checked" . EmulationHyprland, text: "Enable Hyprland Emulation Mode"}
+        {type: "Edit", opts: "x+10 yp w60 vClipboardDistance Number", text: clipboardDistance},
+        {type: "Checkbox", opts: "x30 y+10 vEmulationHyprland Checked" . EmulationHyprland, text: "Enable Hyprland Emulation Mode"}
     ])
 
+    ; Clipboard Settings
+    CreateGroupBoxWithControls("Clipboard Settings", 20, "", 460, [
+        {type: "Checkbox", opts: "x30 y+10 vAdaptionMode Checked" . AdaptionMode, text: "Enable Adaption Mode"},
+        {type: "Text", opts: "x30 yp+20", text: "Clipboard 1 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot1", text: ClipSlot1},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 2 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot2", text: ClipSlot2},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 3 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot3", text: ClipSlot3},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 4 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot4", text: ClipSlot4},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 5 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot5", text: ClipSlot5},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 6 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot6", text: ClipSlot6},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 7 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot7", text: ClipSlot7},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 8 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot8", text: ClipSlot8},
+        {type: "Text", opts: "x30 y+10", text: "Clipboard 9 Text:"},
+        {type: "Edit", opts: "x+10 yp w200 vClipSlot9", text: ClipSlot9}
+    ])
     mainGui.Add("Button", "x360 y+30 w120 h30", "Save Settings").OnEvent("Click", SaveSettings)
+    mainGui.Add("Button", "x20 yp w120 h30", "Reset (re-open after)").OnEvent("Click", (*) => FileDelete(A_ScriptDir "\config.ini"))
 }
 
 ; ============================================================================
@@ -234,7 +255,17 @@ SaveSettings(*) {
     global clipboardDistance := Saved.ClipboardDistance
     global EmulationHyprland := Saved.EmulationHyprland
 
-    
+    global AdaptionMode := Saved.AdaptionMode
+    global ClipSlot1 := Saved.ClipSlot1
+    global ClipSlot2 := Saved.ClipSlot2
+    global ClipSlot3 := Saved.ClipSlot3
+    global ClipSlot4 := Saved.ClipSlot4
+    global ClipSlot5 := Saved.ClipSlot5
+    global ClipSlot6 := Saved.ClipSlot6
+    global ClipSlot7 := Saved.ClipSlot7
+    global ClipSlot8 := Saved.ClipSlot8
+    global ClipSlot9 := Saved.ClipSlot9
+
     ; Save to INI file
     IniWrite(partialBrowserTitle, configPath, "Browser", "PartialBrowserTitle")
     IniWrite(outpatientTabTitle, configPath, "Reports", "OutpatientTabTitle")
@@ -244,7 +275,19 @@ SaveSettings(*) {
     IniWrite(initials, configPath, "User", "Initials")
     IniWrite(clipboardDistance, configPath, "User", "ClipboardDistance")
     IniWrite(EmulationHyprland, configPath, "User", "EmulationHyprland")
-    
+
+
+    IniWrite(AdaptionMode, configPath, "Clipboard", "AdaptionMode")
+    IniWrite(ClipSlot1, configPath, "Clipboard", "ClipSlot1")
+    IniWrite(ClipSlot2, configPath, "Clipboard", "ClipSlot2")
+    IniWrite(ClipSlot3, configPath, "Clipboard", "ClipSlot3")
+    IniWrite(ClipSlot4, configPath, "Clipboard", "ClipSlot4")
+    IniWrite(ClipSlot5, configPath, "Clipboard", "ClipSlot5")
+    IniWrite(ClipSlot6, configPath, "Clipboard", "ClipSlot6")
+    IniWrite(ClipSlot7, configPath, "Clipboard", "ClipSlot7")
+    IniWrite(ClipSlot8, configPath, "Clipboard", "ClipSlot8")
+    IniWrite(ClipSlot9, configPath, "Clipboard", "ClipSlot9")
+
     ToolTip("Settings saved!",,, 1)
     SetTimer(() => ToolTip(), -1000)
 }
@@ -263,6 +306,17 @@ LoadSettings() {
     global initials := IniRead(configPath, "User", "Initials", "DEFAULT NAME")
     global clipboardDistance := IniRead(configPath, "User", "ClipboardDistance", "10")
     global EmulationHyprland := IniRead(configPath, "User", "EmulationHyprland", "0")
+
+    global AdaptionMode := IniRead(configPath, "Clipboard", "AdaptionMode", "0")
+    global ClipSlot1 := IniRead(configPath, "Clipboard", "ClipSlot1", "")
+    global ClipSlot2 := IniRead(configPath, "Clipboard", "ClipSlot2", "")
+    global ClipSlot3 := IniRead(configPath, "Clipboard", "ClipSlot3", "")
+    global ClipSlot4 := IniRead(configPath, "Clipboard", "ClipSlot4", "")
+    global ClipSlot5 := IniRead(configPath, "Clipboard", "ClipSlot5", "")
+    global ClipSlot6 := IniRead(configPath, "Clipboard", "ClipSlot6", "")
+    global ClipSlot7 := IniRead(configPath, "Clipboard", "ClipSlot7", "")
+    global ClipSlot8 := IniRead(configPath, "Clipboard", "ClipSlot8", "")
+    global ClipSlot9 := IniRead(configPath, "Clipboard", "ClipSlot9", "")
 }
 
 SetDefaultSettings() {
@@ -274,4 +328,15 @@ SetDefaultSettings() {
     global initials := "DEFAULT NAME"
     global clipboardDistance := "10"
     global EmulationHyprland := "0"
+
+    global AdaptionMode := "0"
+    global ClipSlot1 := "EMPTY"
+    global ClipSlot2 := "EMPTY"
+    global ClipSlot3 := "EMPTY"
+    global ClipSlot4 := "EMPTY"
+    global ClipSlot5 := "EMPTY"
+    global ClipSlot6 := "EMPTY"
+    global ClipSlot7 := "EMPTY"
+    global ClipSlot8 := "EMPTY"
+    global ClipSlot9 := "EMPTY"
 }
