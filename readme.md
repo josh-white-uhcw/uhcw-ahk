@@ -1,8 +1,10 @@
 All info is in the Master GUI, just run that file! It's important to read there before running anything.
 Download AHK here:
-```https://www.autohotkey.com/download/ahk-v2.exe```
+```
+https://www.autohotkey.com/download/ahk-v2.exe
+```
 
-Download these scripts with this:
+Download this repo with this:
 ```
 git clone https://github.com/josh-white-uhcw/uhcw-ahk.git
 ```
@@ -13,7 +15,7 @@ git pull
 ```
 
 TODO:
-
+```
 clean folder structure and file contents.
 
 fix ugly gui.
@@ -23,3 +25,4 @@ make appointment book opening cleaner / add more checks and catches to open if i
 add guide tooltips for certain processes like ers add referral.
 
 properly incorperate all finished /beta/ processes.
+```
