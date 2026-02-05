@@ -14,10 +14,12 @@ git pull
 
 TODO:
 
-reorganise folder/file structure.
+clean folder structure and file contents.
 
 fix ugly gui.
 
 make appointment book opening cleaner / add more checks and catches to open if its not perfectly set up.
+
+add guide tooltips for certain processes like ers add referral.
 
 properly incorperate all finished /beta/ processes.

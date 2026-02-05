@@ -46,6 +46,7 @@ CreateScriptsTab(tab) {
     mainGui.Add("Button", "x+10 yp w150 h30", "Refresh List").OnEvent("Click", (*) => PopulateScripts())
     mainGui.Add("Button", "x+10 yp w140 h30", "Open Scripts Folder").OnEvent("Click", (*) => Run(A_ScriptDir "\public"))
     
+
     mainGui.Add("Text", "x20 y+10", "Quick Actions: (BROKEN DONT USE)")
     mainGui.Add("Button", "x20 y+5 w220 h30", "Send DQ Action Message").OnEvent("Click", SendDQMessage)
 }
@@ -84,7 +85,7 @@ CreateSettingsTab(tab) {
 
     ; Clipboard Settings
     CreateGroupBoxWithControls("Clipboard Settings", 20, "", 460, [
-        {type: "Checkbox", opts: "x30 y+10 vAdaptionMode Checked" . AdaptionMode, text: "Enable Adaption Mode"},
+        {type: "Checkbox", opts: "x30 yp+20 vAdaptionMode Checked" . AdaptionMode, text: "Enable Adaption Mode"},
         {type: "Text", opts: "x30 yp+20", text: "Clipboard 1 Text:"},
         {type: "Edit", opts: "x+10 yp w200 vClipSlot1", text: ClipSlot1},
         {type: "Text", opts: "x30 y+10", text: "Clipboard 2 Text:"},
@@ -121,8 +122,7 @@ CreateInfoTab(tab) {
     
     CreateAutoSizedGroupBox("Prereqs / Notes", 20, "", 460,
         "- turn numlock on `n" .
-        "- note the kill command at the bottom to close instantly `n" . 
-        "- appointment book searching in OP is weird right now, dont use `n"
+        "- appointment book searching in OP is weird right now, dont use `n" .
         "- enter a MRN once manually on each app before using the script, as the apps are slow on first search which can make the script act weird `n" . 
         "- change the variables on the settings tab `n" .
         "- try refrain from using multiple scripts, some override each other `n" .
@@ -130,17 +130,17 @@ CreateInfoTab(tab) {
         "- --- Most importantly ---- be careful, chances are this code will do something unexpected to you, so sorry in advance for lack of documentation."
     )
     
-    CreateAutoSizedGroupBox("Keys", 20, "", 460,
-        "Master Workflow Script (global) `n"
+    CreateAutoSizedGroupBox("Keybinds", 20, "", 460,
+        "Master Workflow Script (ALL SCRIPTS) `n"
         "- ` (backtick) - Kill script(s) immediately `n"
         "- ` (backtick) + Shift - Send DQ signature `n"
         "`n"
 
         "Clippy `n"
         "- F1-F9 - Paste from clipboard slots 1-9 `n"
-        "- F10 - Clear all clipboard slots and tooltips `n"
-        "- STATIONARY will use the values put in settings (when i add it soon) `n"
-        "- ADAPT will override the next slot each time you copy, allowing storage of the 9 most recent clipboard snippets `n"
+        "- F10 - Clear all clipboard slots and tooltips in adapt mode `n"
+        "- Adapt Mode saves the most recent 9 copies you make, however it starts with your original settings.`n"
+        "- Without Adapt mode it keeps whatever settings you have set. `n"
         "`n"
 
         "Outpatients `n"
@@ -157,8 +157,10 @@ CreateInfoTab(tab) {
         "`n"
 
         "ERS `n"
-        "This script is in beta, so you should not use it right now.`n"
-
+        "- CTRL + SHIFT + V - Paste into unpasteable areas (UBRN box)`n"
+        "- Hashtag - Paste 'Referral added to EPR/PAS to be booked'`n"
+        "- SHIFT + Hashtag - Paste ' - Awaiting triage'`n"
+        "- Insert - Add referral process, pretty complex so read through it. will add guide tooltips soon"
     )
 }
 
