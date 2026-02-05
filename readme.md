@@ -5,7 +5,7 @@ Download AHK here:
 Download these scripts with this:
 ```
 git clone https://github.com/josh-white-uhcw/uhcw-ahk.git
-```.
+```
 
 Be sure to run the following command daily to get the up-to-date:
 ```
