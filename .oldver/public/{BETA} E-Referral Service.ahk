@@ -38,11 +38,11 @@ Insert:: {
         return
         }
 
-        if lookFor("Hospital-Trust", 20, 25) {
-        MsgBox("Could not find Hospital Trust box")
-        addReferralCycle := 1 ; reset
-        return
-        }
+        ;if !lookFor("Hospital-Trust", 20, 25) {
+        ;MsgBox("Could not find Hospital Trust box")
+        ;addReferralCycle := 1 ; reset
+        ;return
+        ;}
     
         Sleep(100)
         Send("uni") ; hospital trust
