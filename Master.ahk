@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
 
+global configFile := A_ScriptDir "\config.ini"
+
 ; Base Gui Stuff
 myGui := Gui()
 myGui.Opt("AlwaysOnTop")
@@ -30,10 +32,20 @@ Tab.UseTab(3)
 MyGui.Add("Text", , "Initials:")
 ConfInitials := MyGui.Add("Edit", "w200")
 ConfLegacySheet := MyGui.Add("Checkbox", "", "Legacy Sheet (No Attendance ID Column)")
-MyGui.AddHotkey("vHotkeyRevenueCycle")
-; use ahk 'edit' gui thing for clipboards!
 
-SaveBtn := MyGui.Add("Button", "", "Save Settings")
+; Hotkey Controls
+MyGui.Add("Text", "xm+10 y+20", "Revenue Cycle:")
+HotkeyRevenueCycle := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyRevenueCycle")
+
+MyGui.Add("Text", "xm+10 y+10", "Powerchart:")
+HotkeyPowerchart := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyPowerchart")
+
+MyGui.Add("Text", "xm+10 y+10", "Add Referral:")
+HotkeyAddReferral := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyAddReferral")
+
+ResetBtn := MyGui.Add("Button", "xm+10 y+20", "Reset Hotkeys")
+SaveBtn := MyGui.Add("Button", "x+10 yp", "Save Settings")
+ResetBtn.OnEvent("Click", ResetHotkeys)
 SaveBtn.OnEvent("Click", SaveSettings)
 
 ; Load current settings
@@ -58,25 +70,37 @@ LoadScripts(*) {
 }
 
 OpenScript(*) {
-    ToolTip("test")
+    ToolTip("not added yet, open manually")
     SetTimer () => ToolTip(), -1000 ; make tooltip last 1 second
 }
 
 LoadCurrentSettings() {
-    configFile := A_ScriptDir "\config.ini"
-
     ConfInitials.Value := IniRead(configFile, "Settings", "initials", "")
     ConfLegacySheet.Value := (IniRead(configFile, "Settings", "LegacySheet", "false") = "true") ? 1 : 0
-    MyGui["HotkeyRevenueCycle"].Value := IniRead(configFile, "CitrixHotkeys", "HotkeyRevenueCycle", "")
+
+    ; Load hotkeys
+    HotkeyRevenueCycle.Value := IniRead(configFile, "Hotkeys", "RevenueCycle", "")
+    HotkeyPowerchart.Value := IniRead(configFile, "Hotkeys", "Powerchart", "")
+    HotkeyAddReferral.Value := IniRead(configFile, "Hotkeys", "AddReferral", "")
 }
 
 SaveSettings(*) {
-    configFile := A_ScriptDir "\config.ini"
-
     IniWrite(ConfInitials.Value, configFile, "Settings", "initials")
     IniWrite(ConfLegacySheet.Value ? "true" : "false", configFile, "Settings", "LegacySheet")
-    IniWrite(MyGui["HotkeyRevenueCycle"].Value, configFile, "CitrixHotkeys", "HotkeyRevenueCycle")
+
+    ; Save hotkeys
+    IniWrite(HotkeyRevenueCycle.Value, configFile, "Hotkeys", "RevenueCycle")
+    IniWrite(HotkeyPowerchart.Value, configFile, "Hotkeys", "Powerchart")
+    IniWrite(HotkeyAddReferral.Value, configFile, "Hotkeys", "AddReferral")
 
     ToolTip("Settings saved!")
     SetTimer () => ToolTip(), -1000 ; make tooltip last 1 second
+}
+
+ResetHotkeys(*) {
+    IniDelete("config.ini", "Hotkeys") ; Delete the [Hotkeys] section
+    Run("Master.ahk") ; Restart
+
+    ToolTip("Hotkeys cleared! Click 'Save Settings' to apply.")
+    SetTimer () => ToolTip(), -2000 ; make tooltip last 2 seconds
 }

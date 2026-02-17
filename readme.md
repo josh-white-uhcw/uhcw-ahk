@@ -14,12 +14,12 @@ git pull
 
 TODO:
 
-clean folder structure and file contents.
+⏳ rewrite everything
 
-fix ugly gui.
+✅ fix ugly gui.
 
-make appointment book opening cleaner / add more checks and catches to open if its not perfectly set up.
+❌ make appointment book opening cleaner / add more checks and catches to open if its not perfectly set up.
 
-add guide tooltips for certain processes like ers add referral.
+✅ add guide tooltips for certain processes like ers add referral.
 
-properly incorperate all finished /beta/ processes.
+✅ properly incorperate all finished /beta/ processes.

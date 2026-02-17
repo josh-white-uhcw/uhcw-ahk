@@ -2,7 +2,8 @@
 #Include ../ConfigLoader.ahk
 #Include ../dependencies/_all.ahk
 
-Numpad1:: {
+Hotkey RevenueCycleKey, RevenueCycle
+RevenueCycle(*) {
     if !windowCheck("Revenue Cycle") { ; calls dependencies/WindowCheck.ahk
         return
     }
@@ -15,20 +16,19 @@ Numpad1:: {
     Send("{Enter}")
 }
 
-Numpad2:: {
+Hotkey PowerChartKey, PowerChart
+PowerChart(*) {
     ToolTipTimer("Powerchart", 1)
-    if !windowCheck("Revenue Cycle") {
+    if !windowCheck("PowerChart") {
         return
     }
 
-    if !FindImage("task") {
+    if !FindImage("PowerChartMRN", "110", "10") { ; Clicks the search icon
         ToolTipTimer("??? - No task image found", 5)
         return
     }
 
-    Sleep(50)
-    Send("p") ; p for 'Powerchart'
-    Sleep(50)
-    Send("{Enter}")
-    ToolTipTimer("Success", 1)
+    ; Finish later
+
+    Sleep(200)
 }

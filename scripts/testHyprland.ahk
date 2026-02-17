@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 
-
 ; Win+O to toggle transparency between opaque and transparent
 #o::
 {
@@ -14,7 +13,7 @@
     ; Otherwise, set back to fully opaque
     if (currentTrans = "" || currentTrans = 255)
     {
-        WinSetTransparent(230, activeWindow)
+        WinSetTransparent(200, activeWindow)
     }
     else
     {

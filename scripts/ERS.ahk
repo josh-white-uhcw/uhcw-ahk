@@ -2,14 +2,24 @@
 #Include ../ConfigLoader.ahk
 #Include ../dependencies/_all.ahk
 
-Home:: OpenMacroGui()
+#:: {
+    Send("Waitlist added to EPR")
+}
+
+Hotkey AddReferralKey, AddReferral
+AddReferral(*) {
+    OpenMacroGui()
+}
+
+; all below is for add referral !!!
 
 OpenMacroGui() {
     macroGui := Gui("+AlwaysOnTop", "Add Referral Setup")
     macroGui.SetFont("s10", "Segoe UI")
 
-    macroGui.Add("Text", , "UBRN: *")
-    macroGui.Add("Edit", "w200 vUbrn").OnEvent("Change", (*) => UpdateOkButton(macroGui))
+    macroGui.Add("Text", , "UBRN (12 digits): *")
+    ubrnEdit := macroGui.Add("Edit", "w200 vUbrn Number")
+    ubrnEdit.OnEvent("Change", (*) => UpdateOkButton(macroGui))
 
     macroGui.Add("Text", , "Treatment Function: *")
     macroGui.Add("Edit", "w200 vTreatmentFunction").OnEvent("Change", (*) => UpdateOkButton(macroGui))
@@ -32,10 +42,15 @@ OpenMacroGui() {
 
 UpdateOkButton(guiObj) {
     fields := guiObj.Submit(false)
-    allFilled := (Trim(fields.Ubrn) != "")
+
+    ; Check UBRN is exactly 12 digits
+    ubrnValid := (StrLen(fields.Ubrn) = 12) && RegExMatch(fields.Ubrn, "^\d{12}$")
+
+    allFilled := ubrnValid
         && (Trim(fields.TreatmentFunction) != "")
         && (Trim(fields.Priority) != "")
         && (Trim(fields.ReasonForReferral) != "")
+
     guiObj["OkBtn"].Enabled := allFilled
 }
 
