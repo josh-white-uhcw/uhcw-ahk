@@ -1,8 +1,8 @@
-windowCheck(windowTitle) {
+WindowCheck(windowTitle) {
     SetTitleMatchMode(2)
 
     if WinExist(windowTitle) {
-        WinActivate()
+        WinActivate(windowTitle)
         return true   ; explicitly return true if found
     } else {
         MsgBox("Window not found: " windowTitle)

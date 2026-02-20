@@ -29,16 +29,21 @@ myGui.Add("Text", , "Will add info here soon")
 ; Places the following elements in tab 3 (Config)
 Tab.UseTab(3)
 
+MyGui.Add("Text", , "Browser Name:")
+ConfBrowser := MyGui.Add("Edit", "w200")
 MyGui.Add("Text", , "Initials:")
 ConfInitials := MyGui.Add("Edit", "w200")
 ConfLegacySheet := MyGui.Add("Checkbox", "", "Legacy Sheet (No Attendance ID Column)")
 
 ; Hotkey Controls
-MyGui.Add("Text", "xm+10 y+20", "Revenue Cycle:")
+MyGui.Add("Text", "xm+10 y+20", "Enter Outcome:")
+HotkeyEnterOutcome := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyEnterOutcome")
+
+MyGui.Add("Text", "xm+10 y+10", "Revenue Cycle:")
 HotkeyRevenueCycle := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyRevenueCycle")
 
-MyGui.Add("Text", "xm+10 y+10", "Powerchart:")
-HotkeyPowerchart := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyPowerchart")
+MyGui.Add("Text", "xm+10 y+10", "PowerChart:")
+HotkeyPowerChart := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyPowerChart")
 
 MyGui.Add("Text", "xm+10 y+10", "Add Referral:")
 HotkeyAddReferral := MyGui.Add("Hotkey", "x+10 yp-3 w200 vHotkeyAddReferral")
@@ -75,22 +80,26 @@ OpenScript(*) {
 }
 
 LoadCurrentSettings() {
+    ConfBrowser.Value := IniRead(configFile, "Settings", "browser", "")
     ConfInitials.Value := IniRead(configFile, "Settings", "initials", "")
     ConfLegacySheet.Value := (IniRead(configFile, "Settings", "LegacySheet", "false") = "true") ? 1 : 0
 
     ; Load hotkeys
+    HotkeyEnterOutcome.Value := IniRead(configFile, "Hotkeys", "EnterOutcome", "")
     HotkeyRevenueCycle.Value := IniRead(configFile, "Hotkeys", "RevenueCycle", "")
-    HotkeyPowerchart.Value := IniRead(configFile, "Hotkeys", "Powerchart", "")
+    HotkeyPowerChart.Value := IniRead(configFile, "Hotkeys", "PowerChart", "")
     HotkeyAddReferral.Value := IniRead(configFile, "Hotkeys", "AddReferral", "")
 }
 
 SaveSettings(*) {
+    IniWrite(ConfBrowser.Value, configFile, "Settings", "browser")
     IniWrite(ConfInitials.Value, configFile, "Settings", "initials")
     IniWrite(ConfLegacySheet.Value ? "true" : "false", configFile, "Settings", "LegacySheet")
 
     ; Save hotkeys
+    IniWrite(HotkeyEnterOutcome.Value, configFile, "Hotkeys", "EnterOutcome")
     IniWrite(HotkeyRevenueCycle.Value, configFile, "Hotkeys", "RevenueCycle")
-    IniWrite(HotkeyPowerchart.Value, configFile, "Hotkeys", "Powerchart")
+    IniWrite(HotkeyPowerChart.Value, configFile, "Hotkeys", "PowerChart")
     IniWrite(HotkeyAddReferral.Value, configFile, "Hotkeys", "AddReferral")
 
     ToolTip("Settings saved!")
