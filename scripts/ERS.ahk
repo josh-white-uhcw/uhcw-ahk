@@ -44,23 +44,24 @@ RunMacro(guiObj, *) {
 
     shortDate := FormatTime(fields.ReferralDate, "dd/MM/yyyy")
 
-    ; --- Execution ---
+    ; real execution
     if !WindowCheck("Add Referral") {
         MsgBox("Window check failed")
         return
     }
 
-    if !FindImage("hospital-trust", "110", "20") { ; Clicks the search icon
+    if !FindImage("RevenueCycle_Hospital-Trust", "110", "20") { ; Clicks the search icon
         ToolTipTimer("??? - No image found", 5)
         return
     }
 
-    ; all of the sleep(10) are temporary, does weird things if its too fast!
+    ; sleeps below here are needed when new boxes are added to the window.
 
     Send("uni") ; hospital trust
     Send("{Enter}")
-    Sleep(50)
+    Sleep(100)
     Send("{Enter}") ; add new pathway
+    Sleep(10)
     Send("{Tab}")
     Send("I") ; indirect cab referral
     Sleep(10)
@@ -69,32 +70,27 @@ RunMacro(guiObj, *) {
     Send("+{Tab}")
     Send("+{Tab}")
     Send("+{Tab}")
-    Sleep(10)
-
     Send(fields.Ubrn)
+
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Enter}") ; "paste" thing
+
     Send("{Tab}") ; goes to treatment function
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
-    Sleep(10)
     Send(fields.TreatmentFunction) ; treatment function
-    Sleep(10)
+
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
-    Sleep(10)
     Send(fields.Priority) ; priority
-    Sleep(10)
-
-    ;Sleep (1000) ; debug
 
     Send("{Tab}")
     Send("{Tab}")
@@ -102,9 +98,6 @@ RunMacro(guiObj, *) {
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
-    Sleep(10)
-
-    ;
     Send(shortDate) ; referral date
 
     Send("{Tab}")
@@ -112,21 +105,18 @@ RunMacro(guiObj, *) {
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
-
     Send(fields.ReasonForReferral) ; reason for referral
-    Sleep(10)
 
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
     Send("{Down}") ; RTT 10
-    Sleep(10)
 
     Send("{Tab}")
     Send("{Tab}")
     Send("{Tab}")
-    Send(fields.ReasonForReferral) ; reason for referral *2
+    Send(fields.ReasonForReferral) ; reason for referral #2
 }
 
 TreatmentFunctionsList := [
