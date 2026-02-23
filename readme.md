@@ -10,7 +10,7 @@ Be sure to run the following command daily to get the up-to-date:
 
 TODO:
 
-⏳ rewrite everything
+⏳ rewrite everything.
 
 ✅ fix ugly gui.
 
