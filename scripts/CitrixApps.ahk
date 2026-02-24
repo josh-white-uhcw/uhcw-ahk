@@ -5,21 +5,21 @@ Critical ; allows queuing keys
 
 try Hotkey EnterOutcomeKey, EnterOutcome
 EnterOutcome(*) {
-    AppointmentBookGUI := Gui("+AlwaysOnTop", "Add Referral Setup")
-    AppointmentBookGUI.SetFont("s10", "Segoe UI")
+    EnterOutcomeGUI := Gui("+AlwaysOnTop", "Add Referral Setup")
+    EnterOutcomeGUI.SetFont("s10", "Segoe UI")
 
-    AppointmentBookGUI.Add("Text", , "Treatment Function: *")
-    AppointmentBookGUI.Add("DropDownList", "w200 Choose1 vOutcome", ["No Documentation", "Workflow Error-Unactionable", "Workflow Error-Actionable", "Checked Out", "Already Checked Out", "Other Query", "Cancelled", "No Show", "Checkout No Documentation", "No OPA", "Java Error", "Java Error Unactionable"])
+    EnterOutcomeGUI.Add("Text", , "Treatment Function: *")
+    EnterOutcomeGUI.Add("DropDownList", "w200 Choose1 vOutcome", ["No Documentation", "Workflow Error-Unactionable", "Workflow Error-Actionable", "Checked Out", "Already Checked Out", "Other Query", "Cancelled", "No Show", "Checkout No Documentation", "No OPA", "Java Error", "Java Error Unactionable"])
 
-    AppointmentBookGUI.Add("Text", , "NOC:")
-    AppointmentBookGUI.Add("Edit", "w200 vNOC Number")
+    EnterOutcomeGUI.Add("Text", , "NOC:")
+    EnterOutcomeGUI.Add("Edit", "w200 vNOC Number")
 
-    AppointmentBookGUI.Add("Text", "cRed", "* Required fields")
+    EnterOutcomeGUI.Add("Text", "cRed", "* Required fields")
 
-    okBtn := AppointmentBookGUI.Add("Button", "Default w80 vOkBtn", "OK")
-    okBtn.OnEvent("Click", RunOutcomeGui.Bind(AppointmentBookGUI))
+    okBtn := EnterOutcomeGUI.Add("Button", "Default w80 vOkBtn", "OK")
+    okBtn.OnEvent("Click", RunOutcomeGui.Bind(EnterOutcomeGUI))
 
-    AppointmentBookGUI.Show("AutoSize Center")
+    EnterOutcomeGUI.Show("AutoSize Center")
 }
 
 RunOutcomeGui(guiObj, *) {
