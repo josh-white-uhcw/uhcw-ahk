@@ -2,6 +2,7 @@
 #Include ../ConfigLoader.ahk
 #Include ../dependencies/_all.ahk
 Critical ; allows queuing keys
+SetTimer(AutoLoop, 100)
 
 try Hotkey EnterOutcomeKey, EnterOutcome
 EnterOutcome(*) {
@@ -83,7 +84,7 @@ PowerChart(*) {
     }
 
     Sleep(100)
-    if !FindImage("PowerChart_MRN-Search", "110", "10") { ; Clicks the search icon
+    if !FindImage("PowerChart/MRN-Search", "110", "10") { ; Clicks the search icon
         ToolTipTimer("??? - No image found", 5)
         return
     }
@@ -95,7 +96,7 @@ PowerChart(*) {
 
     if Sudo {
         WinWait("ACCESSIBLE INFO")
-        if !FindImage("PowerChart_Dismiss", "10", "10") {
+        if !FindImage("PowerChart/Dismiss", "10", "10") {
             ToolTipTimer("??? - No image found", 5)
             return
         }
@@ -103,6 +104,7 @@ PowerChart(*) {
 
 
     Sleep(200)
+    Send("{Enter}")
 }
 
 try Hotkey PMOfficeKey, PMOffice
@@ -134,7 +136,7 @@ ViewEncounter(guiObj, *) {
     Send("{End}") ; does to bottom of list, to see other buttons
     Sleep(50)
 
-    if !FindImage("PMOffice_ViewEncounter", "10", "10") {
+    if !FindImage("PMOffice/ViewEncounter", "10", "10") {
         ToolTipTimer("??? - No image found", 5)
         return
     }
@@ -159,13 +161,13 @@ AppointmentBook(*) {
 
     Sleep(50)
 
-    if !FindImage("AppointmentBook_Ellipsis", 10, 10) {
+    if !FindImage("AppointmentBook/Ellipsis", 10, 10) {
         return
     }
 
     Sleep(800)
 
-    if !FindImage("AppointmentBook_Reset", 10, 10) {
+    if !FindImage("AppointmentBook/Reset", 10, 10) {
         return
     }
 
@@ -177,4 +179,15 @@ AppointmentBook(*) {
     Sleep(100)
     Send(AppointmentBookStartDate)
     Send("{Enter}")
+}
+
+
+AutoLoop() {
+    Sleep(100) ; Stops PU usage going crazy
+
+    try WinKill("Encounter Selection") ; Close PowerChart encounter selection after search
+    try if WinExist("Assign") { ; Close 'Assign a relationship' after searching
+        WinActivate("Assign")
+        Send("{Enter}")
+    }
 }

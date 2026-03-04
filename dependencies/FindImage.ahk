@@ -5,7 +5,7 @@ FindImage(imageName, clickCoordsX := 0, clickCoordsY := 0) { ; clickCoords are o
         return true
     }
     else {
-        MsgBox("Could not find image")
+        ToolTipTimer("Could not find image", "5")
         return false
     }
 }

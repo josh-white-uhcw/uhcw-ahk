@@ -24,7 +24,12 @@ LeftGui.AddButton("x+10 yp w180", "Close All Scripts [Soon]").OnEvent("Click", C
 LeftGui.AddText("xm y+20 w600 0x10")
 LeftGui.AddText("xm y+5 w600 Center", "Info")
 LeftGui.AddText("xm w600 0x10")
-LeftGui.AddText("xm y+5 w600", "Will add info here soon")
+
+LeftGui.AddGroupBox("r3 w600", "How to use:")
+LeftGui.AddText("xm y+5 w600", "How to Use:")
+LeftGui.AddText("xm y+5 w600", "- Configure your settings and bind your hotkeys on the right")
+LeftGui.AddText("xm y+5 w600", "- Click the script you would like to run and press 'Open Script'")
+LeftGui.AddText("xm y+5 w600", "Thats it, below is a description of the functions of each script.")
 
 ; Right GUI: Config & Hotkeys
 RightGui := Gui()

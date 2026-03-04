@@ -45,8 +45,14 @@ RunMacro(guiObj, *) {
         return
     }
 
-    if !FindImage("TicketRaise_Equipment", 10, 30) {
-        return
+    loop {
+        if !FindImage("TicketRaise_Equipment", 10, 30) {
+            Run ("https://uhcw.service-now.com/sp?id=sc_cat_item&sys_id=234c5ab11b30bd100068eb91b24bcb77")
+            Sleep 1500  ; image search can skip over it or something?
+        }
+        else {
+            break
+        }
     }
 
     ToolTipTimer("YES", 1)
@@ -65,9 +71,9 @@ RunMacro(guiObj, *) {
     Send("{Tab}")
     Send("{Tab}")
     Sleep(1000)
-    Send("i")
+    Send("i") ; inpatient
     Send("{Enter}")
-    Sleep(50)
+    Sleep(200)
     Send("{Tab}")
     Send("{Tab}")
     Send(fields.MRN)
