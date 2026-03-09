@@ -10,6 +10,7 @@ Be sure to run the following command daily to get the up-to-date:
 
 Next steps:
 
+- replace tooltiptimer with logs that appear on the side?
 - add PMOffice options
 - clean up code
 - clean up gui

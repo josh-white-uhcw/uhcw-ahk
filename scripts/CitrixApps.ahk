@@ -22,7 +22,6 @@ EnterOutcome(*) {
 
     EnterOutcomeGUI.Show("AutoSize Center")
 }
-
 RunOutcomeGui(guiObj, *) {
     fields := guiObj.Submit()
     guiObj.Destroy()
@@ -107,65 +106,6 @@ PowerChart(*) {
     Send("{Enter}")
 }
 
-try Hotkey PMOfficeKey, PMOffice
-PMOffice(*) {
-    PMOfficeGUI := Gui("+AlwaysOnTop", "PM Office Options")
-    PMOfficeGUI.SetFont("s10", "Segoe UI")
-
-    PMOfficeGUI.Add("Text", , "Make sure clipboard is MRN!")
-
-    okBtn := PMOfficeGUI.Add("Button", "Default vViewEncounter", "View Encounter")
-    okBtn.OnEvent("Click", ViewEncounter.Bind(PMOfficeGUI))
-
-    okBtn := PMOfficeGUI.Add("Button", "Default vInpatientElectiveAdmission Disabled", "Inpatient Elective Admission [Soon]")
-    okBtn.OnEvent("Click", InpatientElectiveAdmission.Bind(PMOfficeGUI))
-
-    okBtn := PMOfficeGUI.Add("Button", "Default vDischarge Disabled", "Discharge [Soon]")
-    okBtn.OnEvent("Click", Discharge.Bind(PMOfficeGUI))
-
-    PMOfficeGUI.Show("AutoSize Center")
-}
-
-ViewEncounter(guiObj, *) {
-    guiObj.Destroy()
-    ; --- Execution ---
-
-    if !WindowCheck("Access") {
-        ToolTipTimer("Access window not found", 1)
-        return
-    }
-
-    if !FindImage("PMOffice/ViewEncounter", "10", "10") {
-        Send("{Down}")
-        Send("{End}") ; does to bottom of list, to see other buttons
-        Sleep(50)
-
-        if !FindImage("PMOffice/ViewEncounter", "10", "10") {
-            ToolTipTimer("??? - No image found", 5)
-            return
-        }
-    }
-
-    ToolTipTimer("WORKED!", 1)
-    Send("{Enter}")
-
-    WinWait("Encounter Search")
-    Send("^v")
-    Send("{Enter}")
-
-    ; finish later
-
-}
-
-InpatientElectiveAdmission(guiObj, *) {
-    fields := guiObj.Submit()
-    guiObj.Destroy()
-    ; --- Execution ---
-}
-
-Discharge(guiObj, *) {
-}
-
 try Hotkey AppointmentBookKey, AppointmentBook
 AppointmentBook(*) {
     if !WindowCheck("Standard Patient") {
@@ -194,12 +134,75 @@ AppointmentBook(*) {
     Send("{Enter}")
 }
 
+try Hotkey PMOfficeKey, PMOffice
+PMOffice(*) {
+    PMOfficeGUI := Gui("+AlwaysOnTop", "PM Office Options")
+    PMOfficeGUI.SetFont("s10", "Segoe UI")
+
+    PMOfficeGUI.Add("Text", , "Make sure clipboard is MRN!")
+
+    okBtn := PMOfficeGUI.Add("Button", "Default", "View Encounter")
+    okBtn.OnEvent("Click", RunConversation.Bind("ViewEncounter"))
+
+    okBtn := PMOfficeGUI.Add("Button", "", "Inpatient Elective Admission [Soon]")
+    okBtn.OnEvent("Click", RunConversation.Bind("InpatientElectiveAdmission"))
+
+    okBtn := PMOfficeGUI.Add("Button", "", "Discharge [Soon]")
+    okBtn.OnEvent("Click", RunConversation.Bind("Discharge"))
+
+    PMOfficeGUI.Show("AutoSize Center")
+
+    RunConversation(ConvName, *) {
+        PMOfficeGUI.Destroy()
+
+        if !windowCheck("Access Management Office") {
+            return
+        }
+
+        CoordMode "Mouse", "Screen"
+        Click(2012, 58)
+        CoordMode "Mouse", "Client"
+        Sleep(250)
+
+        if !FindImage("PMOffice/" . ConvName, "10", "10") {
+            ToolTipTimer("Cannot Find Conversation", 5)
+            return
+        }
+
+        ToolTipTimer("Found Conversation", 1)
+        Send("{Enter}")
+
+        if !WinWait("Encounter Search", , 5) {
+            MsgBox "Encounter Search did not appear"
+            return
+        }
+
+        if ConvName = "Discharge" {
+            Send("{Tab}")
+        }
+        Send("^v")
+        Send("{Enter}")
+
+        if ConvName = "InpatientElectiveAdmission" {
+            WinWaitClose("Encounter Search")
+            if !WinWait("Inpatient Elective Admission", , 5) {
+                MsgBox "Inpatient window did not appear"
+                return
+            }
+        }
+    }
+}
+
 AutoLoop() {
     Sleep(100) ; Stops PU usage going crazy
 
     try WinKill("Encounter Selection") ; Close PowerChart encounter selection after search
     try if WinExist("Assign") { ; Close 'Assign a relationship' after searching
         WinActivate("Assign")
+        Send("{Enter}")
+    }
+    try if WinExist("Admit Patient") { ; 'TCI date not today' thing
+        WinActivate("Admit Patient")
         Send("{Enter}")
     }
 }
