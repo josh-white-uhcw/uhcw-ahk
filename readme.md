@@ -8,14 +8,9 @@ Download these scripts with this:
 Be sure to run the following command daily to get the up-to-date:
 ```git pull```.
 
-TODO:
+Next steps:
 
-⏳ rewrite everything.
-
-✅ fix ugly gui.
-
-❌ make appointment book opening cleaner / add more checks and catches to open if its not perfectly set up.
-
-✅ add guide tooltips for certain processes like ers add referral.
-
-✅ properly incorperate all finished /beta/ processes.
+- add PMOffice options
+- clean up code
+- clean up gui
+- add more customisation / features

@@ -135,15 +135,22 @@ ViewEncounter(guiObj, *) {
         return
     }
 
-    Send("{Down}")
-    Send("{End}") ; does to bottom of list, to see other buttons
-    Sleep(50)
-
     if !FindImage("PMOffice/ViewEncounter", "10", "10") {
-        ToolTipTimer("??? - No image found", 5)
-        return
+        Send("{Down}")
+        Send("{End}") ; does to bottom of list, to see other buttons
+        Sleep(50)
+
+        if !FindImage("PMOffice/ViewEncounter", "10", "10") {
+            ToolTipTimer("??? - No image found", 5)
+            return
+        }
     }
 
+    ToolTipTimer("WORKED!", 1)
+    Send("{Enter}")
+
+    WinWait("Encounter Search")
+    Send("^v")
     Send("{Enter}")
 
     ; finish later

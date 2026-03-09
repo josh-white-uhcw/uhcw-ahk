@@ -15,12 +15,6 @@ global RevenueCycleKey := IniRead(configFile, "Hotkeys", "RevenueCycle", "")
 global PowerChartKey := IniRead(configFile, "Hotkeys", "PowerChart", "")
 global AppointmentBookKey := IniRead(configFile, "Hotkeys", "AppointmentBook", "")
 global PMOfficeKey := IniRead(configFile, "Hotkeys", "PMOffice", "")
-
 global AddReferralKey := IniRead(configFile, "Hotkeys", "AddReferral", "")
-
-^+v:: {
-    ; Bypasses unpasteable areas
-    SendInput(A_Clipboard)
-}
 
 ToolTipTimer("Config Loaded", 1)

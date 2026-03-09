@@ -1,10 +1,10 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
+#Include dependencies/_all.ahk
 
 global configFile := A_ScriptDir "\config.ini"
 global MasterGuiOpen := true ; opens on start so True
-
-colW := 640
+global colW := 640
 
 ; Left GUI: Scripts & Info
 LeftGui := Gui()
@@ -72,8 +72,9 @@ RightGui.AddText("xm y+20 w600 0x10")
 RightGui.AddButton("xm y+8 w180", "Reset Hotkeys").OnEvent("Click", ResetHotkeys)
 RightGui.AddButton("x+10 yp w180", "Save Settings").OnEvent("Click", SaveSettings)
 
-; Show both GUIs side by side
 LoadCurrentSettings()
+
+; Sticks GUIs together
 
 LeftGui.Show("w" colW " x100 y100")
 WinGetPos(&lx, &ly, &lw, , LeftGui.Hwnd)
@@ -168,7 +169,7 @@ ResetHotkeys(*) {
     Reload()
 }
 
-;  Show GUI Hotkey
+;  Show/Hide GUI Hotkey
 NumpadEnter:: {
 
     global MasterGuiOpen
@@ -177,7 +178,6 @@ NumpadEnter:: {
         WinClose(LeftGui)
         WinClose(RightGui)
         MasterGuiOpen := 0
-
     }
     else {
         LeftGui.Show()

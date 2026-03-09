@@ -3,10 +3,8 @@
 #Include ../dependencies/_all.ahk
 
 equipmentNumber := "P103092"
-contactNumber := "Number Not Listed"
 location := "20026"
 contactNumberNotListed := "teams"
-
 
 PgUp:: {
     TicketRaiseGUI := Gui("+AlwaysOnTop", "Merge Ticket Maker")
@@ -37,7 +35,6 @@ UpdateOkButton(guiObj) {
 
 RunMacro(guiObj, *) {
     fields := guiObj.Submit()
-    ;shortDate := FormatTime(fields.ReferralDate, "dd/MM/yyyy")
 
     ; real execution
     if !WindowCheck(browser) {
