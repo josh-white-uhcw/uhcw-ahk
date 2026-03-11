@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#Include dependencies/_all.ahk
 
 global configFile := A_ScriptDir "\config.ini"
 global MasterGuiOpen := true ; opens on start so True
@@ -51,6 +50,7 @@ RightGui.AddEdit("x+10 yp-3 w380 Number Limit8 vConfAppointmentBookStartDate")
 
 RightGui.AddCheckbox("xm y+10 w300 vConfLegacySheet", "Legacy Sheet (No Attendance ID Column)")
 RightGui.AddCheckbox("x+0 yp w300 vConfSudo", "Super User Apps")
+RightGui.AddCheckbox("xm y+10 w300 vConfShowLogs", "Show Logs")
 
 RightGui.AddText("xm y+20 w600 0x10")
 RightGui.AddText("xm y+5 w600 Center", "Hotkeys")
@@ -133,6 +133,7 @@ LoadCurrentSettings() {
         ConfAppointmentBookStartDate: IniRead(configFile, "Settings", "AppointmentBookStartDate", ""),
         ConfLegacySheet: IniRead(configFile, "Settings", "LegacySheet", "false") = "true" ? 1 : 0,
         ConfSudo: IniRead(configFile, "Settings", "Sudo", "false") = "true" ? 1 : 0,
+        ConfShowLogs: IniRead(configFile, "Settings", "ShowLogs", "false") = "true" ? 1 : 0,
         HotkeyEnterOutcome: IniRead(configFile, "Hotkeys", "EnterOutcome", ""),
         HotkeyRevenueCycle: IniRead(configFile, "Hotkeys", "RevenueCycle", ""),
         HotkeyPowerChart: IniRead(configFile, "Hotkeys", "PowerChart", ""),
@@ -152,6 +153,7 @@ SaveSettings(*) {
     IniWrite(s.ConfAppointmentBookStartDate, configFile, "Settings", "AppointmentBookStartDate")
     IniWrite(s.ConfLegacySheet ? "true" : "false", configFile, "Settings", "LegacySheet")
     IniWrite(s.ConfSudo ? "true" : "false", configFile, "Settings", "Sudo")
+    IniWrite(s.ConfShowLogs ? "true" : "false", configFile, "Settings", "ShowLogs")
 
     IniWrite(s.HotkeyEnterOutcome, configFile, "Hotkeys", "EnterOutcome")
     IniWrite(s.HotkeyRevenueCycle, configFile, "Hotkeys", "RevenueCycle")

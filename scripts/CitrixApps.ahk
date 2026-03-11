@@ -2,7 +2,7 @@
 #Include ../ConfigLoader.ahk
 #Include ../dependencies/_all.ahk
 Critical ; allows queuing keys
-SetTimer(AutoLoop, 100)
+SetTimer(AutoLoop, 100) ; run loop at bottom every 100ms
 
 try Hotkey EnterOutcomeKey, EnterOutcome
 EnterOutcome(*) {
@@ -10,7 +10,17 @@ EnterOutcome(*) {
     EnterOutcomeGUI.SetFont("s10", "Segoe UI")
 
     EnterOutcomeGUI.Add("Text", , "Treatment Function: *")
-    EnterOutcomeGUI.Add("DropDownList", "w200 Choose1 vOutcome", ["No Documentation", "Workflow Error-Unactionable", "Workflow Error-Actionable", "Checked Out", "Already Checked Out", "Other Query", "Cancelled", "No Show", "Checkout No Documentation", "No OPA", "Java Error", "Java Error Unactionable"])
+    EnterOutcomeGUI.Add("DropDownList", "w200 Choose1 vOutcome", [
+        "No Documentation",
+        "Already actioned",
+        "EPR Error",
+        "Checked Out",
+        "Other",
+        "Cancelled",
+        "No Show",
+        "Other",
+        "Workflow Error"
+    ])
 
     EnterOutcomeGUI.Add("Text", , "NOC:")
     EnterOutcomeGUI.Add("Edit", "w200 vNOC Number")
@@ -26,16 +36,11 @@ RunOutcomeGui(guiObj, *) {
     fields := guiObj.Submit()
     guiObj.Destroy()
     ; --- Execution ---
-    ; code here later
-    ToolTipTimer("runtest", 1)
-
     if !windowCheck(browser) {
         return
     }
-    ; outcome: MsgBox(fields.Outcome)
-    ; noc: MsgBox(fields.NOC)
     Sleep(500)
-    loop 4 {
+    loop 5 {
         Send("{Right}")
     }
     Send(fields.Outcome)
@@ -44,7 +49,7 @@ RunOutcomeGui(guiObj, *) {
     Send("{Right}")
     Send(initials)
     Send("{Right}")
-    Send(FormatTime(, "MM/dd/yyyy"))
+    Send(FormatTime(, "dd/MM/yyyy"))
     Sleep(150)
     Send("{Enter}")
     Send("{Home}")
@@ -58,6 +63,9 @@ RunOutcomeGui(guiObj, *) {
 try Hotkey RevenueCycleKey, RevenueCycle
 RevenueCycle(*) {
     if !windowCheck("Revenue Cycle") { ; calls dependencies/WindowCheck.ahk
+        return
+    }
+    if !MRNCheck() {
         return
     }
 
@@ -79,6 +87,9 @@ try Hotkey PowerChartKey, PowerChart
 PowerChart(*) {
     ToolTipTimer("Powerchart", 1)
     if !windowCheck("PowerChart") {
+        return
+    }
+    if !MRNCheck() {
         return
     }
 
@@ -109,6 +120,9 @@ PowerChart(*) {
 try Hotkey AppointmentBookKey, AppointmentBook
 AppointmentBook(*) {
     if !WindowCheck("Standard Patient") {
+        return
+    }
+    if !MRNCheck() {
         return
     }
 
@@ -158,6 +172,9 @@ PMOffice(*) {
         if !windowCheck("Access Management Office") {
             return
         }
+        if !MRNCheck() {
+            return
+        }
 
         CoordMode "Mouse", "Screen"
         Click(2012, 58)
@@ -194,7 +211,7 @@ PMOffice(*) {
 }
 
 AutoLoop() {
-    Sleep(100) ; Stops PU usage going crazy
+    Sleep(100) ; Stops CPU usage going crazy
 
     try WinKill("Encounter Selection") ; Close PowerChart encounter selection after search
     try if WinExist("Assign") { ; Close 'Assign a relationship' after searching

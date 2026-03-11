@@ -2,7 +2,7 @@
 #Include ../ConfigLoader.ahk
 #Include ../dependencies/_all.ahk
 
-equipmentNumber := "P103092"
+equipmentNumber := "AEV10001"
 location := "20026"
 contactNumberNotListed := "teams"
 

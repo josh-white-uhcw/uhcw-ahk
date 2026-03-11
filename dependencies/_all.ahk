@@ -1,4 +1,6 @@
 #Include FindImage.ahk
+#Include Log.ahk
+#Include MRNCheck.ahk
 #Include ToolTipTimer.ahk
 #Include WindowCheck.ahk
 
