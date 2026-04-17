@@ -76,13 +76,19 @@ RunTxtMsgMacro(g, phoneField, outcomeField, dateField, locationField) {
 ShowApptCommentGUI() {
     Log("-- Enter Pre-OP Outcome GUI --", 1)
     EnterPreOpOutcomeGUI := BuildGui("Enter Pre-Op Outcome")
+    EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vOrigin", [
+        "From MPTL list",
+        "PT called",
+        "Request from med sec"
+    ])
     EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vPriority", [
+        "",
         "Routine",
         "Urgent",
         "31/62"
     ])
     EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vPtInform", [
-        "Letter Sent",
+        "Letter sent",
         "Informed and agreed over telephone"
     ])
     EnterPreOpOutcomeGUI.AddButton("Default w80", "OK").OnEvent("Click", EnterOutcomeExe)
@@ -92,10 +98,17 @@ ShowApptCommentGUI() {
         Log("Running Pre-Op Outcome", 2)
         fields := EnterPreOpOutcomeGUI.Submit()
         EnterPreOpOutcomeGUI.Destroy()
+        Log("Origin: " . fields.Origin)
         Log("Priority: " . fields.Priority)
         Log("Patient informed: " . fields.PtInform)
 
-        Send(fields.Priority . ", " . fields.PtInform . " - JW " . FormatTime(, "dd/MM/yyyy"))
+        if fields.Origin != ""
+            Send(fields.Origin . ", ")
+
+        if fields.Priority != ""
+            Send(fields.Priority . ", ")
+
+        Send(fields.PtInform . " - JW " . FormatTime(, "dd/MM/yyyy"))
 
         Log("-- Enter Pre-Op Outcome GUI --", 4)
     }

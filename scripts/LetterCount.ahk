@@ -50,8 +50,12 @@ ProcessTallyRestore() {
     global tally, count
     while tally > 0 {
         tally -= 1
-        count += 10
-        display.Value := count
+        loop 10 {
+            count += 1
+            display.Value := count
+            if FancyEffects
+                Sleep(2)
+        }
         tallyDisplay.Value := "10ths removed: " . tally
     }
 }
