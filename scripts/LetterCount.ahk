@@ -1,6 +1,5 @@
 #Requires AutoHotkey v2.0
-#Include ../ConfigLoader.ahk
-#Include ../dependencies/_all.ahk
+#Include dependencies/_all.ahk
 
 count := 0
 tally := 0 ; 10ths

@@ -1,3 +1,4 @@
+#Include ConfigLoader.ahk
 #Include FindImage.ahk
 #Include GuiBuild.ahk
 #Include Log.ahk

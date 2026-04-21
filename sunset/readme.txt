@@ -1,3 +1,0 @@
-All sunset apps are for apps which are no longer used, but not 100% unneeded. an archive of sorts.
-
-Status: ?

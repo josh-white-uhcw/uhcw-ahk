@@ -1,15 +1,8 @@
-; ============================================================
-;  UpdateChecker.ahk  —  include this at the top of Masterv2.ahk
-;  Repo  : https://github.com/Chariot-UHCW/AutoHotkey-Scripts
-;  Checks remote "version" file against local, clones if newer.
-; ============================================================
-
 REPO_URL := "https://github.com/Chariot-UHCW/AutoHotkey-Scripts.git"
 RAW_VERSION := "https://raw.githubusercontent.com/Chariot-UHCW/AutoHotkey-Scripts/master/version"
 
 CheckForUpdate()
 
-; ------------------------------------------------------------
 CheckForUpdate() {
     ; --- 1. Read local version ------------------------------------
     localVersionFile := A_ScriptDir "\version"
@@ -22,7 +15,7 @@ CheckForUpdate() {
     ; --- 2. Fetch remote version (with timeout) -------------------
     remoteVersion := FetchRemoteVersion(RAW_VERSION)
     if (remoteVersion = "") {
-        ; Silent fail — don't block the user if GitHub is unreachable
+        MsgBox("Error - Cannot fetch remote - unable to update")
         return
     }
 
@@ -37,6 +30,7 @@ CheckForUpdate() {
         "A new version is available!`n`n"
         "Current : " localVersion "`n"
         "Latest  : " remoteVersion "`n`n"
+        "You can view the changelog at the repo page or in changelog.txt once installed.`n`n"
         "Clone the new version now?",
         "Update Available",
         "YesNo Icon?"
@@ -49,15 +43,14 @@ CheckForUpdate() {
     ;  parentDir    = C:\...
     ;  newFolder    = autohotkeyscript-0.1.0   (uses REMOTE version)
     parentDir := GetParentDir(A_ScriptDir)
-    currentFolderName := GetFolderName(A_ScriptDir)
-    newFolderName := currentFolderName "-" remoteVersion
+    newFolderName := "Chariot's AHK Scripts - " remoteVersion
     newFolderPath := parentDir "\" newFolderName
 
     ; --- 6. Check the target doesn't already exist ----------------
     if DirExist(newFolderPath) {
         MsgBox(
-            "Folder already exists:`n" newFolderPath "`n`n"
-            "Delete it and try again, or relaunch from that folder.",
+            "Update already installed at:`n" newFolderPath "`n`n"
+            "If you need to reinstall please delete that folder first and try again.",
             "Update Checker",
             "Icon!"
         )
@@ -71,10 +64,9 @@ CheckForUpdate() {
     ; --- 8. Verify clone succeeded --------------------------------
     if !DirExist(newFolderPath) {
         MsgBox(
-            "Clone failed. Please check:`n"
+            "Clone failed. You probably don't have git installed. Please check:`n"
             "  • Git is installed and on your PATH`n"
-            "  • You have internet access`n"
-            "  • The repo URL is correct`n`n"
+            "  • You have internet access`n`n"
             "Repo: " REPO_URL,
             "Update Failed",
             "IconX"
@@ -86,7 +78,7 @@ CheckForUpdate() {
     MsgBox(
         "Update cloned successfully!`n`n"
         "New folder:`n" newFolderPath "`n`n"
-        "Please relaunch Masterv2.ahk from the new folder.",
+        "Please relaunch Masterv2.ahk from the new folder (version " remoteVersion ") and delete this old one (version " localVersion ").",
         "Update Complete",
         "Iconi"
     )

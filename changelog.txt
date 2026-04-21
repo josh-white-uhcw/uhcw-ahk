@@ -1,0 +1,6 @@
+1.0.0 -- THE FIRST --
+
+Added auto updating, which hopefully works without issue.
+Cleaned up codebase and removed redundant files.
+
+Great things to come soon.

@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
-#Include ../ConfigLoader.ahk
-#Include ../dependencies/_all.ahk
+#Include dependencies/_all.ahk
+
 Critical ; Allows queuing keys
 SetTimer(AutoLoop, 50) ; normal loops hijack control
 
