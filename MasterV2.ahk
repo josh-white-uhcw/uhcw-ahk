@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 #Include dependencies/_all.ahk
+#Include UpdateChecker.ahk
 
 SaveLogs := true
 ShowErrors := true

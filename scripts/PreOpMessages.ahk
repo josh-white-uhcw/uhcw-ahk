@@ -79,6 +79,7 @@ ShowApptCommentGUI() {
     EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vOrigin", [
         "From MPTL list",
         "PT called",
+        "Email request",
         "Request from med sec"
     ])
     EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vPriority", [
