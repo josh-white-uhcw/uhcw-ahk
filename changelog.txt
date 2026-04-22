@@ -1,3 +1,8 @@
+1.1.1 -- log fix --
+
+fix for that annoying error when a log folder is not found.
+if it keeps happening feel free to disable logs in the config. its optional
+
 1.1.0 -- Text message sending test --
 
 Added a script to pre-fill text messages with some templates which i can add onto later.
