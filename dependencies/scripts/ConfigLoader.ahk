@@ -21,3 +21,4 @@ global AppointmentBookKey := IniRead(configFile, "Hotkeys", "HotkeyAppointmentBo
 global PMOfficeKey := IniRead(configFile, "Hotkeys", "HotkeyPMOffice", "")
 global AddReferralKey := IniRead(configFile, "Hotkeys", "HotkeyAddReferral", "")
 global PreOpGUIKey := IniRead(configFile, "Hotkeys", "HotkeyPreOpGui", "")
+global ShorthandTranslatorKey := IniRead(configFile, "Hotkeys", "HotkeyShorthandTranslator", "")

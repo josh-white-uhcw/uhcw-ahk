@@ -1,21 +1,24 @@
 #Requires AutoHotkey v2.0
-#Include scripts/dependencies/_all.ahk
+#Include dependencies/scripts/_all.ahk
 #Include dependencies/UpdateChecker.ahk
+
+TraySetIcon("./images\Icons\Agent.ico")
 
 SaveLogs := true
 ShowErrors := true
 
 ScriptsDir := A_ScriptDir "\scripts"
-DescriptionsIniPath := ScriptsDir "\_descriptions.ini"
+scriptInfoPath := "arrays\scriptsInfo.ini"
 ConfigIniPath := A_ScriptDir "\config.ini"
 
 MasterGui := BuildGui("Master")
 
-ScriptList := MasterGui.AddListView("r10 w700", ["Name", "Description"])
+ScriptList := MasterGui.AddListView("r10 w700", ["Name", "AI%","Description"])
 Loop Files, ScriptsDir "\*.ahk"
 {
-    FileDesc := IniRead(DescriptionsIniPath, "Descriptions", A_LoopFileName, "")
-    ScriptList.Add(, A_LoopFileName, FileDesc)
+    FileDesc := IniRead(ScriptInfoPath, "Descriptions", A_LoopFileName, "")
+    FileAi := IniRead(ScriptInfoPath, "AIPercent", A_LoopFileName, "")
+    ScriptList.Add(, A_LoopFileName, FileAi, FileDesc)
 }
 
 ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checked
@@ -40,6 +43,7 @@ RunFile(ListView, RowNumber) {
 }
 
 ShowConfig() {
+    TraySetIcon("./images\Icons\Config program.ico")
     ConfigGui := BuildGui("Config")
 
     ConfigGui.Title := "Master Script - Config"
@@ -74,7 +78,8 @@ ShowConfig() {
         ["Appointment Book:", "vHotkeyAppointmentBook"],
         ["PM Office: [WIP]", "vHotkeyPMOffice"],
         ["Add Referral:", "vHotkeyAddReferral"],
-        ["Pre-Op Options:", "vHotkeyPreOpGui"]
+        ["Pre-Op Options:", "vHotkeyPreOpGui"],
+        ["Shorthand Translator:", "vHotkeyShorthandTranslator"]
     ] {
         ConfigGui.AddText("xm y+10 w200", entry[1])
         ConfigGui.AddHotkey("x+10 yp-3 w380 " entry[2])
@@ -97,7 +102,8 @@ ShowConfig() {
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
-        ["HotkeyPreOpGui"]
+        ["HotkeyPreOpGui"],
+        ["HotkeyShorthandTranslator"]
     ] {
         ConfigGui[entry[1]].Value := IniRead(ConfigIniPath, "Hotkeys", entry[1], "")
     }
@@ -107,6 +113,7 @@ ShowConfig() {
     ConfigGui.AddButton("x+10", "Reset").OnEvent("Click", (*) => ResetConfig(ConfigGui))
 
     ConfigGui.Show("AutoSize Center")
+    TraySetIcon("./images\Icons\Agent.ico")
 }
 
 SaveConfig(GuiObj) {
@@ -125,7 +132,8 @@ SaveConfig(GuiObj) {
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
-        ["HotkeyPreOpGui"]
+        ["HotkeyPreOpGui"],
+        ["HotkeyShorthandTranslator"]
     ] {
         IniWrite(GuiObj[entry[1]].Value, ConfigIniPath, "Hotkeys", entry[1])
     }
@@ -149,7 +157,8 @@ ResetConfig(GuiObj) {
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
-        ["HotkeyPreOpGui"]
+        ["HotkeyPreOpGui"],
+        ["HotkeyShorthandTranslator"]
     ] {
         GuiObj[entry[1]].Value := ""
     }

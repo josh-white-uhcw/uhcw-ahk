@@ -6,7 +6,7 @@
 ; once i rewrite the code ill remove this comment.
 ; forgive me
 
-global configFile := A_ScriptDir "\..\templates\txtMsg.ini"
+global configFile := A_ScriptDir "\..\arrays\txtMsg.ini"
 global globals := Map()
 global templates := Map()
 global dropdowns := Map()

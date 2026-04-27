@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
-#Include dependencies/_all.ahk
+#Include ../dependencies/scripts/_all.ahk
 
 equipmentNumber := "AEV10001"
 location := "20026"

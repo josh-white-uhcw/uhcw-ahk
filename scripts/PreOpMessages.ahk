@@ -1,15 +1,17 @@
 #Requires AutoHotkey v2.0
-#Include dependencies/_all.ahk
+#Include ../dependencies/scripts/_all.ahk
+
+TraySetIcon("..\images\Icons\Dialog.ico")
 
 try Hotkey PreOpGUIKey, PreOpGUI
 PreOpGUI(*) {
     Log("-- PRE-OP GUI --", 1)
     PreOpGUI := BuildGui("Pre-Op Message GUI")
 
-    btn1 := PreOpGUI.AddButton("w160 Default", "RC Appointment Comment")
+    btn1 := PreOpGUI.AddButton("w300 Default", "RC Appointment Comment")
     btn1.OnEvent("Click", (*) => (PreOpGUI.Destroy(), ShowApptCommentGUI()))
 
-    btn2 := PreOpGUI.AddButton("w160", "Text Message")
+    btn2 := PreOpGUI.AddButton("w300", "Text Message")
     btn2.OnEvent("Click", (*) => (PreOpGUI.Destroy(), TxtMsgGUI()))
 
     PreOpGUI.Show("AutoSize Center")
@@ -72,19 +74,20 @@ RunTxtMsgMacro(g, phoneField, outcomeField, dateField, locationField) {
 ShowApptCommentGUI() {
     Log("-- Enter Pre-OP Outcome GUI --", 1)
     EnterPreOpOutcomeGUI := BuildGui("Enter Pre-Op Outcome")
-    EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vOrigin", [
+    EnterPreOpOutcomeGUI.AddText("","Origin")
+    EnterPreOpOutcomeGUI.AddDropDownList("w300 Choose1 vOrigin", [
         "From MPTL list",
         "PT called",
         "Email request",
         "Request from med sec"
     ])
-    EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vPriority", [
+    EnterPreOpOutcomeGUI.AddDropDownList("w300 Choose1 vPriority", [
         "",
         "Routine",
         "Urgent",
         "31/62"
     ])
-    EnterPreOpOutcomeGUI.AddDropDownList("w200 Choose1 vPtInform", [
+    EnterPreOpOutcomeGUI.AddDropDownList("w300 Choose1 vPtInform", [
         "Letter sent",
         "Informed and agreed over telephone"
     ])

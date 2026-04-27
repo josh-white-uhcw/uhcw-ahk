@@ -4,28 +4,26 @@ RAW_VERSION := "https://raw.githubusercontent.com/Chariot-UHCW/AutoHotkey-Script
 CheckForUpdate()
 
 CheckForUpdate() {
-    ; --- 1. Read local version ------------------------------------
-    localVersionFile := A_ScriptDir "\version"
-    if !FileExist(localVersionFile) {
-        MsgBox "Local version file not found.`nExpected: " localVersionFile, "Update Checker", "Icon!"
+    ; Check local version
+    if !FileExist(A_ScriptDir "\version") {
+        MsgBox "Local version file not found.`nExpected: " "\version", "Update Checker", "Icon!"
         return
     }
-    localVersion := Trim(FileRead(localVersionFile), " `t`r`n")
+    localVersion := Trim(FileRead(A_ScriptDir "\version"), " `t`r`n")
 
-    ; --- 2. Fetch remote version (with timeout) -------------------
+    ; Check remote version
     remoteVersion := FetchRemoteVersion(RAW_VERSION)
     if (remoteVersion = "") {
         MsgBox("Error - Cannot fetch remote - unable to update")
         return
     }
 
-    ; --- 3. Compare -----------------------------------------------
+    ; Compare
     if (localVersion = remoteVersion) {
-        ; Up to date — continue silently
         return
     }
 
-    ; --- 4. Prompt ------------------------------------------------
+    ; Prompt update
     answer := MsgBox(
         "A new version is available!`n`n"
         "Current : " localVersion "`n"
@@ -38,15 +36,12 @@ CheckForUpdate() {
     if (answer != "Yes")
         return
 
-    ; --- 5. Work out sibling folder name and path -----------------
-    ;  A_ScriptDir  = C:\...\autohotkeyscript
-    ;  parentDir    = C:\...
-    ;  newFolder    = autohotkeyscript-0.1.0   (uses REMOTE version)
+    ; Create folder and get paths for updated script
     parentDir := GetParentDir(A_ScriptDir)
     newFolderName := "Chariot's AHK Scripts - " remoteVersion
     newFolderPath := parentDir "\" newFolderName
 
-    ; --- 6. Check the target doesn't already exist ----------------
+    ; Check if its already installed
     if DirExist(newFolderPath) {
         MsgBox(
             "Update already installed at:`n" newFolderPath "`n`n"
@@ -57,11 +52,11 @@ CheckForUpdate() {
         return
     }
 
-    ; --- 7. Git clone ---------------------------------------------
+    ; Clone repo
     gitCmd := 'git clone "' REPO_URL '" "' newFolderPath '"'
     RunWait A_ComSpec ' /c ' gitCmd, , "Hide"
 
-    ; --- 8. Verify clone succeeded --------------------------------
+    ; Check it installed
     if !DirExist(newFolderPath) {
         MsgBox(
             "Clone failed. You probably don't have git installed. Please check:`n"
@@ -74,7 +69,7 @@ CheckForUpdate() {
         return
     }
 
-    ; --- 9. Notify user -------------------------------------------
+    ; Success message
     MsgBox(
         "Update cloned successfully!`n`n"
         "New folder:`n" newFolderPath "`n`n"
@@ -84,6 +79,7 @@ CheckForUpdate() {
     )
 }
 
+; I used ai for this part:
 ; ------------------------------------------------------------
 ;  Downloads the raw version file and returns the first line.
 ;  Returns "" on any failure so startup is never blocked.
@@ -104,19 +100,11 @@ FetchRemoteVersion(url) {
     return ""
 }
 
-; ------------------------------------------------------------
-;  Returns the parent directory of a given path.
-;  e.g.  C:\Scripts\myfolder  →  C:\Scripts
-; ------------------------------------------------------------
 GetParentDir(path) {
     SplitPath path, , &parent
     return parent
 }
 
-; ------------------------------------------------------------
-;  Returns just the final folder name from a full path.
-;  e.g.  C:\Scripts\myfolder  →  myfolder
-; ------------------------------------------------------------
 GetFolderName(path) {
     SplitPath path, &name
     return name

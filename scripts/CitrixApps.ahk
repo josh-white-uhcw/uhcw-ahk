@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
-#Include dependencies/_all.ahk
+#Include ../dependencies/scripts/_all.ahk
 
+TraySetIcon("..\images\Icons\Program Folder (16x16px & 32x32px).ico")
 Critical ; Allows queuing keys
 SetTimer(AutoLoop, 50) ; normal loops hijack control
 
@@ -8,7 +9,7 @@ try Hotkey EnterOutcomeKey, EnterOutcome
 EnterOutcome(*) {
     Log("-- Enter Outcome GUI --", 1)
     EnterOutcomeGUI := BuildGui("Enter Outcome")
-    EnterOutcomeGUI.AddDropDownList("w200 Choose1 vOutcome", [
+    EnterOutcomeGUI.AddDropDownList("w300 Choose1 vOutcome", [
         "No Documentation",
         "Already Actioned",
         "Checked Out",
@@ -124,18 +125,17 @@ AppointmentBook(*) {
 
 try Hotkey PMOfficeKey, PMOffice
 PMOffice(*) {
-    PMOfficeGUI := Gui("+AlwaysOnTop", "PM Office Options")
-    PMOfficeGUI.SetFont("s10", "Segoe UI")
+    PMOfficeGUI := BuildGui("PM Office Options")
 
-    PMOfficeGUI.Add("Text", , "Make sure clipboard is MRN!")
+    PMOfficeGUI.AddText( , "Make sure clipboard is MRN!")
 
-    okBtn := PMOfficeGUI.Add("Button", "Default", "View Encounter")
+    okBtn := PMOfficeGUI.AddButton("w300 Default", "View Encounter")
     okBtn.OnEvent("Click", RunConversation.Bind("ViewEncounter"))
 
-    okBtn := PMOfficeGUI.Add("Button", "", "Inpatient Elective Admission [Soon]")
+    okBtn := PMOfficeGUI.AddButton("w300", "Inpatient Elective Admission [Soon]")
     okBtn.OnEvent("Click", RunConversation.Bind("InpatientElectiveAdmission"))
 
-    okBtn := PMOfficeGUI.Add("Button", "", "Discharge [Soon]")
+    okBtn := PMOfficeGUI.AddButton("w300", "Discharge [Soon]")
     okBtn.OnEvent("Click", RunConversation.Bind("Discharge"))
 
     PMOfficeGUI.Show("AutoSize Center")

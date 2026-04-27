@@ -1,24 +1,39 @@
 #Requires AutoHotkey v2.0
-#Include dependencies/_all.ahk
+#Include ../dependencies/scripts/_all.ahk
+
+TraySetIcon("..\images\Icons\New letter.ico")
 
 count := 0
 tally := 0 ; 10ths
 
 LetterCountGui := BuildGUI("Letter Count")
 
-LetterCountGui.SetFont("s24")
-display := LetterCountGui.AddText("Center w300", count)
+; Total GUI content width = 300
+; Button row total = 70+10+70+10+70+10+70 = 310... let's keep 300 and adjust spacing
 
+guiWidth := 320
+margin := 10
+
+; Center the large count display
+LetterCountGui.SetFont("s24")
+display := LetterCountGui.AddText("Center w" . guiWidth, count)
+
+; Button row 1: four buttons, 70 wide, 10 gap → total = 70*4 + 10*3 = 310
+; To center in guiWidth (320): leftMargin = (320 - 310) / 2 = 5
 LetterCountGui.SetFont("s12")
-btn10Subtract := LetterCountGui.AddButton("w70 h40", "-10")
-btnSubtract := LetterCountGui.AddButton("x+10 w70 h40", "-1")
-btnAdd := LetterCountGui.AddButton("x+10 w70 h40", "+1")
-btn10Add := LetterCountGui.AddButton("x+10 w70 h40", "+10")
-btnTally := LetterCountGui.AddButton("xm w150 h40", "10th (Tally 10)")
+btn10Subtract := LetterCountGui.AddButton("xm5 w70 h40", "-10")
+btnSubtract    := LetterCountGui.AddButton("x+10 w70 h40", "-1")
+btnAdd         := LetterCountGui.AddButton("x+10 w70 h40", "+1")
+btn10Add       := LetterCountGui.AddButton("x+10 w70 h40", "+10")
+
+; Button row 2: two buttons, 150 wide, 10 gap → total = 150*2 + 10 = 310
+; Same margin: xm5
+btnTally        := LetterCountGui.AddButton("xm5 w150 h40", "10th (Tally 10)")
 btnTallyRestore := LetterCountGui.AddButton("x+10 w150 h40", "Readd 10ths to the main count")
 
+; Tally label centered across full width
 LetterCountGui.SetFont("s10 italic")
-tallyDisplay := LetterCountGui.AddText("xm Center w300", "10ths: 0")
+tallyDisplay := LetterCountGui.AddText("xm Center w" . guiWidth, "10ths: 0")
 
 ; Events
 btn10Subtract.OnEvent("Click", (*) => UpdateCounter(-10))

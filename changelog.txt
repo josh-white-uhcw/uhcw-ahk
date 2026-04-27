@@ -1,22 +1,30 @@
+1.1.3 -- shorthand translator test --
+
+- Started adding custom icons, so not all scripts will be a green square now. just need to find a good set of icons to use first.
+- Updated GUI elements to be more consistent across scripts 
+- Other small fixes/QoL
+- File structure reorganisation (no user effect)
+- ShorthandTrans.ahk is a script that will help translate abbreviations and shorthand back to full words. will update once finished.
+
 1.1.2 -- clarifications --
 
-added the old logs to this file, so if someone skips multiple versions they can still be up-to-date.
-fixed readme outdated info and added new instructions
+- added the old logs to this file, so if someone skips multiple versions they can still be up-to-date.
+- fixed readme outdated info and added new instructions
 
 1.1.1 -- log fix --
 
-fix for that annoying error when a log folder is not found.
-if it keeps happening feel free to disable logs in the config. its optional
+- fix for that annoying error when a log folder is not found.
+- if it keeps happening feel free to disable logs in the config. its optional
 
 1.1.0 -- Text message sending test --
 
-Added a script to pre-fill text messages with some templates which i can add onto later.
-I should really put the two pre-op scripts in one, but the code is too messy to do that right now.
-Fix for this issue coming really soon.
+- Added a script to pre-fill text messages with some templates which i can add onto later.
+- I should really put the two pre-op scripts in one, but the code is too messy to do that right now.
+- Fix for this issue coming really soon.
 
 1.0.0 -- THE FIRST --
 
-Added auto updating, which hopefully works without issue.
-Cleaned up codebase and removed redundant files.
+- Added auto updating, which hopefully works without issue.
+- Cleaned up codebase and removed redundant files.
 
 Great things to come soon.
