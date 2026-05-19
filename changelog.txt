@@ -1,7 +1,18 @@
+1.3.3 -- GUI Changes
+
++ Added a display of the update logs in the gui so users can see the new changes
+
++ Added a status bar at the bottom displaying the current version, will use this to post announcements at a later time
+
+/ Reworked some of the update logic
+
+# If you have any suggestions or changes you want made please do reach out!
+
 1.3.2 -- Local Git
 
-Added a portal git into the repo, so when updating on a new pc reinstalling git to the PATH is not nessesary.
-This also means if you download the files as a zip you wont ever need to install git. 
+Added a mini git into the project files so when installing/updating on a new pc you do not need to install git.
+This does make the size of the project like twice as large but this should not be too big of a problem.
+If it is you can always delete "/dependencies/MinGit..." and install git as usual.
 
 1.3.1 -- Update test
 

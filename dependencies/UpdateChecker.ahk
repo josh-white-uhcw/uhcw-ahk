@@ -6,6 +6,9 @@ REPO_URL    := "https://github.com/Chariot-UHCW/AutoHotkey-Scripts.git"
 RAW_VERSION := "https://raw.githubusercontent.com/Chariot-UHCW/AutoHotkey-Scripts/master/version"
 LOCAL_VER_FILE := A_ScriptDir "\version"
 
+; Assume not
+global UpdateAvalible := False
+
 ; Run check on startup
 CheckForUpdates()
 
@@ -19,11 +22,12 @@ CheckForUpdates() {
         if (http.Status != 200)
             return
             
-        remoteVer := Trim(http.ResponseText)
+        global remoteVer := Trim(http.ResponseText)
         localVer  := FileExist(LOCAL_VER_FILE) ? Trim(FileRead(LOCAL_VER_FILE)) : "0.0.0"
 
         ; 2. Robust Version Comparison
         if IsNewer(remoteVer, localVer) {
+            global UpdateAvalible := True
             msg := MsgBox("New Update Found!`n`nLocal: " localVer "`nRemote: " remoteVer "`n`nUpdate now?", "Updater", 4)
             if (msg = "Yes") {
                 DoUpdate()
@@ -76,6 +80,4 @@ DoUpdate() {
     Run(tempBatch, , "Hide")
     ExitApp()
 }
-
-; --- Your Script Content ---
-MsgBox "Application Loaded. Running Version: " (FileExist(LOCAL_VER_FILE) ? FileRead(LOCAL_VER_FILE) : "Unknown")
+;MsgBox "Application Loaded. Running Version: " (FileExist(LOCAL_VER_FILE) ? FileRead(LOCAL_VER_FILE) : "Unknown")

@@ -7,13 +7,14 @@ TraySetIcon("./images\Icons\Agent.ico")
 SaveLogs := true
 ShowErrors := true
 
+global version := FileRead("version")
 ScriptsDir := A_ScriptDir "\scripts"
 scriptInfoPath := "arrays\scriptsInfo.ini"
 ConfigIniPath := A_ScriptDir "\config.ini"
 
 MasterGui := BuildGui("Master")
 
-ScriptList := MasterGui.AddListView("r10 w700", ["FileName", "Name", "Update Status", "Description"])
+ScriptList := MasterGui.AddListView("r10 w850", ["FileName", "Name", "Update Status", "Description"])
 Loop Files, ScriptsDir "\*.ahk"
 {
     CustomName := IniRead(ScriptInfoPath, "Names", A_LoopFileName, A_LoopFileName)
@@ -22,16 +23,28 @@ Loop Files, ScriptsDir "\*.ahk"
     ScriptList.Add(, A_LoopFileName, CustomName, FileAi, FileDesc)
 }
 
-ScriptList.ModifyCol(1, 0)
-
-ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checked
+ScriptList.ModifyCol(1, 0) ; Hide
 ScriptList.ModifyCol(2, "Auto") ; Auto-size
+ScriptList.ModifyCol(4, "Auto") ; Auto-size
+ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checkeds
 
-; These dont do nish rn
-; MasterGui.AddButton("", "Open Selected")
-; MasterGui.AddButton("x+10", "Refresh all scripts")
-; MasterGui.AddButton("x+10", "Close all scripts").OnEvent("Click", (*) => CloseScripts())
 MasterGui.AddButton("xm", "Open Config").OnEvent("Click", (*) => ShowConfig())
+
+ChangelogText := FileRead("changelog.txt")
+MasterGui.AddEdit("ym r15 w350", ChangelogText)
+
+MasterGui.Show("AutoSize Center")
+
+StatusBar := MasterGui.AddStatusBar("Border","")
+MasterGui.GetClientPos(,, &MasterGUIWidth)
+MainStatusBarWidth := ( MasterGUIWidth - 20 ) / 1
+;MsgBox("MasterGUIWidth is " MasterGUIWidth "`n MainStatusBarWidth is " MainStatusBarWidth)
+StatusBar.SetParts(10,MainStatusBarWidth,10)
+if UpdateAvalible
+    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Update avalible",2)
+else 
+    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Up to date",2)
+StatusBar.SetText("",3)
 
 MasterGui.Show("AutoSize Center")
 
@@ -57,13 +70,13 @@ ShowConfig() {
     ConfigGui.AddText("xm y+0 w600 h10 0x10")
 
     ConfigGui.AddText("xm y+10 w200", "Browser Name:")
-    ConfigGui.AddEdit("x+10 yp-3 w380 vConfBrowser")
+    ConfigGui.AddEdit("x+10 yp-3 w350 vConfBrowser")
 
     ConfigGui.AddText("xm y+10 w200", "Full Name:")
-    ConfigGui.AddEdit("x+10 yp-3 w380 vConfFullName")
+    ConfigGui.AddEdit("x+10 yp-3 w350 vConfFullName")
 
     ConfigGui.AddText("xm y+10 w200", "Appt. Book Default Start Date")
-    ConfigGui.AddEdit("x+10 yp-3 w380 Number Limit8 vConfAppointmentBookStartDate")
+    ConfigGui.AddEdit("x+10 yp-3 w350 Number Limit8 vConfAppointmentBookStartDate")
 
     ConfigGui.AddCheckbox("xm y+10 w300 vConfLegacySheet", "Legacy Sheet (No Attendance ID Column)")
     ConfigGui.AddCheckbox("x+0 yp w300 vConfSudo", "Super User Apps")
