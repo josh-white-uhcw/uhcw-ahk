@@ -29,6 +29,7 @@ ScriptList.ModifyCol(4, "Auto") ; Auto-size
 ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checkeds
 
 MasterGui.AddButton("xm", "Open Config").OnEvent("Click", (*) => ShowConfig())
+MasterGui.AddButton("x+5", "Open About Page [Soon]").OnEvent("Click", (*) => ShowAboutPage())
 
 ChangelogText := FileRead("changelog.txt")
 MasterGui.AddEdit("ym r15 w350", ChangelogText)
@@ -138,6 +139,10 @@ ShowConfig() {
 
     ConfigGui.Show("AutoSize Center")
     TraySetIcon("./images\Icons\Agent.ico")
+}
+
+ShowAboutPage(){
+
 }
 
 SaveConfig(GuiObj) {

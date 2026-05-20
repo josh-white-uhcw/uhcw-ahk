@@ -15,7 +15,8 @@ MessageCentreGUI(*) {
     MessageCentreGUI.AddDropDownList("w300 Choose1 vReply", [
         "APPROVED - Pre-Op Booked",
         "DENIED - Has Future Pre-Op",
-        "DENIED - Had Past Pre-Op"
+        "DENIED - Had Past Pre-Op",
+        "DENIED - No Surgical Pathway"
         ;"DENIED - Not a refresh"
     ])
     MessageCentreGUI.AddEdit("Disabled", "")
@@ -40,6 +41,9 @@ MessageCentreGUI(*) {
 
         if fields.Reply = "DENIED - Had Past Pre-Op"
             Send("This request hasn't been actioned as this patient already had a past pre-op appointment which is still valid. " Outro)
+
+        if fields.Reply = "DENIED - No Surgical Pathway"
+            Send("This request hasn't been actioned as this patient does not have a surgical pathway listed in their Powerchart documents. Please re-request once the criteria has been fulfilled. " Outro)
 
         ;Send(Signature)
     }
