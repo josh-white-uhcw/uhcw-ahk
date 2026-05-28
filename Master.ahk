@@ -1,11 +1,13 @@
 #Requires AutoHotkey v2.0
 #Include dependencies/scripts/_all.ahk
 #Include dependencies/UpdateChecker.ahk
+#Include changelog.ahk
 
 TraySetIcon("./images\Icons\Agent.ico")
 
 SaveLogs := true
 ShowErrors := true
+ChangelogData := GetChangelogData()
 
 global version := FileRead("version")
 ScriptsDir := A_ScriptDir "\scripts"
@@ -29,9 +31,9 @@ ScriptList.ModifyCol(4, "Auto") ; Auto-size
 ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checkeds
 
 MasterGui.AddButton("xm", "Open Config").OnEvent("Click", (*) => ShowConfig())
-MasterGui.AddButton("x+5", "Open About Page [Soon]").OnEvent("Click", (*) => ShowAboutPage())
+;MasterGui.AddButton("x+5", "Open About Page [Soon]").OnEvent("Click", (*) => ShowAboutPage())
 
-ChangelogText := FileRead("changelog.txt")
+ChangelogText := FileRead("changelog.txt", "UTF-8")
 MasterGui.AddEdit("ym r15 w350", ChangelogText)
 
 MasterGui.Show("AutoSize Center")
@@ -51,6 +53,8 @@ MasterGui.Show("AutoSize Center")
 
 RunFile(ListView, RowNumber) {
     ScriptName := ListView.GetText(RowNumber, 1)
+    if ScriptName == ""
+        return
     try {
         Run(A_ScriptDir "\scripts\" ScriptName)
         ToolTipTimer(ScriptName " opened!", 1)
@@ -98,7 +102,6 @@ ShowConfig() {
         ["PM Office: [WIP]", "vHotkeyPMOffice"],
         ["Add Referral:", "vHotkeyAddReferral"],
         ["Pre-Op Comments:", "vHotkeyPreOpGui"],
-        ["Pre-Op Message Centre Replies", "vHotkeyMessageCentreReplies"],
         ["Pre-Op Email Replies", "vHotkeyEmailReplies"],
         ["Shorthand Translator:", "vHotkeyShorthandTranslator"]
     ] {
@@ -126,7 +129,6 @@ ShowConfig() {
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
-        ["HotkeyMessageCentreReplies"],
         ["HotkeyEmailReplies"],
         ["HotkeyShorthandTranslator"]
     ] {
@@ -141,7 +143,52 @@ ShowConfig() {
     TraySetIcon("./images\Icons\Agent.ico")
 }
 
+F11:: ShowAboutPage()
+
 ShowAboutPage(){
+    ;TraySetIcon("./images\Icons\Config program.ico")
+    AboutGui := BuildGui("Config")
+
+    AboutGui.Title := "TEST PAGE!"
+
+    ; 2. Generate the HTML string dynamically from the array
+    htmlBody := ""
+    for logItem in ChangelogData {
+        htmlBody .= "<div class='version'>" . logItem.Version . "</div>`n<ul>`n"
+        for change in logItem.Changes {
+            htmlBody .= "  <li><span class='" . change.type . "'>" . change.text . "</span></li>`n"
+        }
+        htmlBody .= "</ul>`n"
+    }
+
+    htmlContent := "
+    (
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <meta charset='UTF-8'>
+        <style>
+            body { font-family: 'Segoe UI', sans-serif; font-size: 14px; background-color: #fafafa; margin: 15px; }
+            .version { color: #007acc; font-weight: bold; font-size: 16px; border-bottom: 1px solid #ccc; margin-top: 15px; }
+            ul { list-style-type: none; padding-left: 5px; }
+            li { margin-bottom: 5px; }
+            .added { color: #2e7d32; }
+            .fixed { color: #d32f2f; }
+        </style>
+    </head>
+    <body>
+    )" . htmlBody . " </body> </html>"
+
+    WB := AboutGui.Add("ActiveX", "w450 h300", "Shell.Explorer").Value
+
+    WB.Navigate("about:blank")
+    while WB.ReadyState != 4
+        Sleep(10)
+    WB.Document.write(htmlContent)
+    WB.Document.close()
+
+    AboutGui.Show("Autosize Center")
 
 }
 
@@ -163,7 +210,6 @@ SaveConfig(GuiObj) {
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
-        ["HotkeyMessageCentreReplies"],
         ["HotkeyEmailReplies"],
         ["HotkeyShorthandTranslator"]
     ] {
@@ -192,7 +238,6 @@ ResetConfig(GuiObj) {
         ["HotkeyPMOffice"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
-        ["HotkeyMessageCentreReplies"],
         ["HotkeyEmailReplies"],
         ["HotkeyShorthandTranslator"]
     ] {
@@ -200,10 +245,6 @@ ResetConfig(GuiObj) {
     }
 }
 
-ShowChangelog() {
-
-}
-
 NumpadEnter:: {
-    MasterGui.Show()
+    MasterGui.Show("Autosize Center")
 }

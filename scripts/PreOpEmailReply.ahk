@@ -14,6 +14,7 @@ EmailReplyGUI(*) {
     EmailReplyGUI.AddDropDownList("w300 Choose1 vReply", [
         "APPROVED - Booked",
         "DENIED - No Surgical Pathway / Triage",
+        "DENIED - Invalid for refresh",
         "DENIED - Not Our Speciality"
     ])
     EmailReplyGUI.AddEdit("Disabled", "")
@@ -36,8 +37,13 @@ EmailReplyGUI(*) {
         if fields.Reply = "DENIED - No Surgical Pathway / Triage"
             Send("This request hasn't been actioned as there is no Surgical Pathway and/or Triage for this patient. Please resubmit this request once this criteria has been filled")
 
+        if fields.Reply = "DENIED - Invalid for refresh"
+            Send("This request hasn't been actioned as the Surgical Pathway and Triage for this patient has expired. Please resubmit this request once a new surgical order / surgical pathway has been made.")
+
         if fields.Reply = "DENIED - Not Our Speciality"
             Send("This request hasn't been actioned as we are unable to book for this speciality. Please resubmit this request to the proper team." )
+
+        
     }
 }
 

@@ -1,3 +1,8 @@
+1.3.5 -- not valid refresh option
+
++ Added "Not valid for refresh" option to email / message centre replies
+- Removed "PreOpMessageCentre" as it was a duplictate of email replys 
+
 1.3.4 -- No Surgical pathway option
 
 + Added "No Surgical Pathway" option to the pre-op message replies

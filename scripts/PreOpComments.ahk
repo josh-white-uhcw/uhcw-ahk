@@ -17,7 +17,8 @@ PreOpGUI(*) {
         "Email request",
         "Rebooked due to staff sickness",
         "Request from med sec",
-        "Request from nurse"
+        "Request from nurse",
+        "Clerical error"
     ])
     EnterPreOpOutcomeGUI.AddText("", "Priority")
     EnterPreOpOutcomeGUI.AddDropDownList("w300 Choose1 vPriority", [
@@ -35,6 +36,8 @@ PreOpGUI(*) {
         "Nurse agreed to contact patient to inform",
         "Med sec agreed to contact patient to inform"
     ])
+    EnterPreOpOutcomeGUI.AddText("", "Extra Comments")
+    global Extra := EnterPreOpOutcomeGUI.AddEdit("r3 w300 vExtra", "")
     EnterPreOpOutcomeGUI.AddText("", "TCI")
     global TCIQuery := EnterPreOpOutcomeGUI.AddEdit("w150 vTCIQuery", "")
     global TCIDate := EnterPreOpOutcomeGUI.AddDateTime("xp+150 yp w150 vTCIDate", "")
@@ -72,6 +75,9 @@ PreOpGUI(*) {
 
         if fields.Origin != ""
             Send(fields.Origin . ", ")
+
+        if fields.Extra != ""
+            Send(fields.Extra . ", ")
 
         Send(fields.PtInform . " - " . initials . " " . FormatTime(, "dd/MM/yyyy"))
 
