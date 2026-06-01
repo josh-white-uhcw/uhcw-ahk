@@ -1,16 +1,19 @@
 GetChangelogData() {
     return [
         {
-            Version: "v1.2.0 (Latest)",
+            Version: "v1.3.6",
             Changes: [
-                { type: "added", text: "✅ Added: Dark mode aaaaaaasupport!" },
-                { type: "fixed", text: "❌ Fixed: Crash on startup." }
+                { type: "added", text: "✅ Added about page that will show changelogs and other info" },
+                { type: "added", text: "✅ Added categories for scripts in listviews for easier finding"},
+                { type: "added", text: "✅ Added Triage script for automating triage requests"},
+    
+                { type: "changed", text: "🔃 Replaced the changelogs in the main GUI with a announcements block. Will make it functional at some point." }
             ]
         },
         {
-            Version: "v1.1.0",
+            Version: "< v1.3.5",
             Changes: [
-                { type: "added", text: "🚀 Improved: Execution speed by 20%" }
+                { type: "", text: "All old logs are visible on github." }
             ]
         }
     ]

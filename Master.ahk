@@ -7,6 +7,7 @@ TraySetIcon("./images\Icons\Agent.ico")
 
 SaveLogs := true
 ShowErrors := true
+rownumber := 0
 ChangelogData := GetChangelogData()
 
 global version := FileRead("version")
@@ -16,25 +17,61 @@ ConfigIniPath := A_ScriptDir "\config.ini"
 
 MasterGui := BuildGui("Master")
 
-ScriptList := MasterGui.AddListView("r10 w850", ["FileName", "Name", "Update Status", "Description"])
+CategoryMap := Map()
+
 Loop Files, ScriptsDir "\*.ahk"
 {
-    CustomName := IniRead(ScriptInfoPath, "Names", A_LoopFileName, A_LoopFileName)
-    FileDesc := IniRead(ScriptInfoPath, "Descriptions", A_LoopFileName, "")
-    FileAi := IniRead(ScriptInfoPath, "LastUpdated", A_LoopFileName, "")
-    ScriptList.Add(, A_LoopFileName, CustomName, FileAi, FileDesc)
+    SectionName := SubStr(A_LoopFileName, 1, -4) ; Strips ".ahk"
+    
+    CustomName := IniRead(scriptInfoPath, SectionName, "Name", A_LoopFileName)
+    FileDesc   := IniRead(scriptInfoPath, SectionName, "Description", "")
+    FileAi     := IniRead(scriptInfoPath, SectionName, "LastUpdated", "")
+    FileCat    := IniRead(scriptInfoPath, SectionName, "Category", "Uncategorized")
+    
+    ; If this category hasn't been seen yet, initialize an empty array for it
+    if !CategoryMap.Has(FileCat)
+        CategoryMap[FileCat] := []
+        
+    ; Push the script data into its category group
+    CategoryMap[FileCat].Push({
+        FileName: A_LoopFileName,
+        Name: CustomName,
+        Status: FileAi,
+        Desc: FileDesc
+    })
 }
 
-ScriptList.ModifyCol(1, 0) ; Hide
-ScriptList.ModifyCol(2, "Auto") ; Auto-size
-ScriptList.ModifyCol(4, "Auto") ; Auto-size
-ScriptList.OnEvent("DoubleClick", RunFile) ; maybe make it open when checkeds
+for CatName, ScriptsInCat in CategoryMap
+{
+    ; Add a bold text label acting as a section header for the category
+    MasterGui.AddText("w850 xm y+15", CatName " Scripts")
+
+    for script in ScriptsInCat
+    {
+        rownumber++
+    }
+    
+    ; Create a dedicated ListView for this category (r4 = 4 rows high)
+    CategoryLV := MasterGui.AddListView("r" rownumber " w850 y+5", ["FileName", "Name", "Update Status", "Description"])
+    rownumber := 0
+    
+    ; Populate only this ListView with its matching scripts
+    for script in ScriptsInCat
+    {
+        CategoryLV.Add(, script.FileName, script.Name, script.Status, script.Desc)
+    }
+    
+    CategoryLV.ModifyCol(1, 0) ; Hide
+    CategoryLV.ModifyCol(2, "Auto") ; Auto-size
+    CategoryLV.ModifyCol(4, "Auto") ; Auto-size
+    CategoryLV.OnEvent("DoubleClick", RunFile) ; maybe make it open when checkeds
+}
 
 MasterGui.AddButton("xm", "Open Config").OnEvent("Click", (*) => ShowConfig())
-;MasterGui.AddButton("x+5", "Open About Page [Soon]").OnEvent("Click", (*) => ShowAboutPage())
+MasterGui.AddButton("x+5", "Open About Page").OnEvent("Click", (*) => ShowAboutPage())
 
 ChangelogText := FileRead("changelog.txt", "UTF-8")
-MasterGui.AddEdit("ym r15 w350", ChangelogText)
+MasterGui.AddEdit("ym r20 w450 Disabled", "WIP")
 
 MasterGui.Show("AutoSize Center")
 
@@ -103,6 +140,7 @@ ShowConfig() {
         ["Add Referral:", "vHotkeyAddReferral"],
         ["Pre-Op Comments:", "vHotkeyPreOpGui"],
         ["Pre-Op Email Replies", "vHotkeyEmailReplies"],
+        ["Triage Request", "vHotkeyTriage"],
         ["Shorthand Translator:", "vHotkeyShorthandTranslator"]
     ] {
         ConfigGui.AddText("xm y+10 w200", entry[1])
@@ -130,6 +168,7 @@ ShowConfig() {
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {
         ConfigGui[entry[1]].Value := IniRead(ConfigIniPath, "Hotkeys", entry[1], "")
@@ -143,13 +182,11 @@ ShowConfig() {
     TraySetIcon("./images\Icons\Agent.ico")
 }
 
-F11:: ShowAboutPage()
-
 ShowAboutPage(){
     ;TraySetIcon("./images\Icons\Config program.ico")
-    AboutGui := BuildGui("Config")
+    AboutGui := BuildGui("About")
 
-    AboutGui.Title := "TEST PAGE!"
+    AboutGui.Title := "About"
 
     ; 2. Generate the HTML string dynamically from the array
     htmlBody := ""
@@ -174,13 +211,14 @@ ShowAboutPage(){
             ul { list-style-type: none; padding-left: 5px; }
             li { margin-bottom: 5px; }
             .added { color: #2e7d32; }
-            .fixed { color: #d32f2f; }
+            .changed { color: #f57c00; }
+            .removed { color: #d32f2f; }
         </style>
     </head>
     <body>
     )" . htmlBody . " </body> </html>"
 
-    WB := AboutGui.Add("ActiveX", "w450 h300", "Shell.Explorer").Value
+    WB := AboutGui.AddActiveX("w650 h500", "Shell.Explorer").Value
 
     WB.Navigate("about:blank")
     while WB.ReadyState != 4
@@ -211,6 +249,7 @@ SaveConfig(GuiObj) {
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {
         IniWrite(GuiObj[entry[1]].Value, ConfigIniPath, "Hotkeys", entry[1])
@@ -239,6 +278,7 @@ ResetConfig(GuiObj) {
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {
         GuiObj[entry[1]].Value := ""
