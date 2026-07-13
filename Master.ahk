@@ -22,16 +22,16 @@ CategoryMap := Map()
 Loop Files, ScriptsDir "\*.ahk"
 {
     SectionName := SubStr(A_LoopFileName, 1, -4) ; Strips ".ahk"
-    
+
     CustomName := IniRead(scriptInfoPath, SectionName, "Name", A_LoopFileName)
-    FileDesc   := IniRead(scriptInfoPath, SectionName, "Description", "")
-    FileAi     := IniRead(scriptInfoPath, SectionName, "LastUpdated", "")
-    FileCat    := IniRead(scriptInfoPath, SectionName, "Category", "Uncategorized")
-    
+    FileDesc := IniRead(scriptInfoPath, SectionName, "Description", "")
+    FileAi := IniRead(scriptInfoPath, SectionName, "LastUpdated", "")
+    FileCat := IniRead(scriptInfoPath, SectionName, "Category", "Uncategorized")
+
     ; If this category hasn't been seen yet, initialize an empty array for it
     if !CategoryMap.Has(FileCat)
         CategoryMap[FileCat] := []
-        
+
     ; Push the script data into its category group
     CategoryMap[FileCat].Push({
         FileName: A_LoopFileName,
@@ -50,17 +50,17 @@ for CatName, ScriptsInCat in CategoryMap
     {
         rownumber++
     }
-    
+
     ; Create a dedicated ListView for this category (r4 = 4 rows high)
     CategoryLV := MasterGui.AddListView("r" rownumber " w850 y+5", ["FileName", "Name", "Update Status", "Description"])
     rownumber := 0
-    
+
     ; Populate only this ListView with its matching scripts
     for script in ScriptsInCat
     {
         CategoryLV.Add(, script.FileName, script.Name, script.Status, script.Desc)
     }
-    
+
     CategoryLV.ModifyCol(1, 0) ; Hide
     CategoryLV.ModifyCol(2, "Auto") ; Auto-size
     CategoryLV.ModifyCol(4, "Auto") ; Auto-size
@@ -75,16 +75,16 @@ MasterGui.AddEdit("ym r20 w450 Disabled", "WIP")
 
 MasterGui.Show("AutoSize Center")
 
-StatusBar := MasterGui.AddStatusBar("Border","")
-MasterGui.GetClientPos(,, &MasterGUIWidth)
-MainStatusBarWidth := ( MasterGUIWidth - 20 ) / 1
+StatusBar := MasterGui.AddStatusBar("Border", "")
+MasterGui.GetClientPos(, , &MasterGUIWidth)
+MainStatusBarWidth := (MasterGUIWidth - 20) / 1
 ;MsgBox("MasterGUIWidth is " MasterGUIWidth "`n MainStatusBarWidth is " MainStatusBarWidth)
-StatusBar.SetParts(10,MainStatusBarWidth,10)
+StatusBar.SetParts(10, MainStatusBarWidth, 10)
 if UpdateAvalible
-    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Update avalible",2)
-else 
-    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Up to date",2)
-StatusBar.SetText("",3)
+    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Update avalible", 2)
+else
+    StatusBar.SetText("Running Version | " version " --> " remoteVer " | Up to date", 2)
+StatusBar.SetText("", 3)
 
 MasterGui.Show("AutoSize Center")
 
@@ -137,9 +137,11 @@ ShowConfig() {
         ["PowerChart:", "vHotkeyPowerChart"],
         ["Appointment Book:", "vHotkeyAppointmentBook"],
         ["PM Office: [WIP]", "vHotkeyPMOffice"],
+        ["Create Note:", "vHotkeyNoteCreate"],
         ["Add Referral:", "vHotkeyAddReferral"],
         ["Pre-Op Comments:", "vHotkeyPreOpGui"],
         ["Pre-Op Email Replies", "vHotkeyEmailReplies"],
+        ["Pre-Op Message Centre Replies", "vHotkeyMessageCentreReplies"],
         ["Triage Request", "vHotkeyTriage"],
         ["Shorthand Translator:", "vHotkeyShorthandTranslator"]
     ] {
@@ -165,9 +167,11 @@ ShowConfig() {
         ["HotkeyPowerChart"],
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
+        ["HotkeyNoteCreate"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyMessageCentreReplies"],
         ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {
@@ -182,7 +186,7 @@ ShowConfig() {
     TraySetIcon("./images\Icons\Agent.ico")
 }
 
-ShowAboutPage(){
+ShowAboutPage() {
     ;TraySetIcon("./images\Icons\Config program.ico")
     AboutGui := BuildGui("About")
 
@@ -200,22 +204,22 @@ ShowAboutPage(){
 
     htmlContent := "
     (
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <meta charset='UTF-8'>
-        <style>
-            body { font-family: 'Segoe UI', sans-serif; font-size: 14px; background-color: #fafafa; margin: 15px; }
-            .version { color: #007acc; font-weight: bold; font-size: 16px; border-bottom: 1px solid #ccc; margin-top: 15px; }
-            ul { list-style-type: none; padding-left: 5px; }
-            li { margin-bottom: 5px; }
-            .added { color: #2e7d32; }
-            .changed { color: #f57c00; }
-            .removed { color: #d32f2f; }
-        </style>
-    </head>
-    <body>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+            <meta charset='UTF-8'>
+            <style>
+                body { font-family: 'Segoe UI', sans-serif; font-size: 14px; background-color: #fafafa; margin: 15px; }
+                .version { color: #007acc; font-weight: bold; font-size: 16px; border-bottom: 1px solid #ccc; margin-top: 15px; }
+                ul { list-style-type: none; padding-left: 5px; }
+                li { margin-bottom: 5px; }
+                .added { color: #2e7d32; }
+                .changed { color: #f57c00; }
+                .removed { color: #d32f2f; }
+            </style>
+        </head>
+        <body>
     )" . htmlBody . " </body> </html>"
 
     WB := AboutGui.AddActiveX("w650 h500", "Shell.Explorer").Value
@@ -246,9 +250,11 @@ SaveConfig(GuiObj) {
         ["HotkeyPowerChart"],
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
+        ["HotkeyNoteCreate"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyMessageCentreReplies"],
         ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {
@@ -275,9 +281,11 @@ ResetConfig(GuiObj) {
         ["HotkeyPowerChart"],
         ["HotkeyAppointmentBook"],
         ["HotkeyPMOffice"],
+        ["HotkeyNoteCreate"],
         ["HotkeyAddReferral"],
         ["HotkeyPreOpGui"],
         ["HotkeyEmailReplies"],
+        ["HotkeyMessageCentreReplies"],
         ["HotkeyTriage"],
         ["HotkeyShorthandTranslator"]
     ] {

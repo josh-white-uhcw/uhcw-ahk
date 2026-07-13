@@ -37,7 +37,7 @@ PreOpGUI(*) {
         "Med sec agreed to contact patient to inform"
     ])
     EnterPreOpOutcomeGUI.AddText("", "Extra Comments")
-    global Extra := EnterPreOpOutcomeGUI.AddEdit("r3 w300 vExtra", "")
+    global Extra := EnterPreOpOutcomeGUI.AddEdit("r3 w300 -WantReturn vExtra", "")
     EnterPreOpOutcomeGUI.AddText("", "TCI")
     global TCIQuery := EnterPreOpOutcomeGUI.AddEdit("w150 vTCIQuery", "")
     global TCIDate := EnterPreOpOutcomeGUI.AddDateTime("xp+150 yp w150 vTCIDate", "")

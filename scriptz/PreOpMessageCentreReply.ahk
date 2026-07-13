@@ -6,10 +6,10 @@ TraySetIcon("..\images\Icons\Dialog.ico")
 Intro := "Hi,"
 Resumbit := "Please resubmit this request once this criteria has been filled"
 
-try Hotkey EmailReplyGUIKey, EmailReplyGUI
-EmailReplyGUI(*) {
-    Log("-- Enter Pre-OP Outcome GUI --", 1)
-    EmailReplyGUI := BuildGui("Enter Pre-Op Outcome")
+try Hotkey MessageCentreReplyGUIKey, MessageCentreReplyGUI
+MessageCentreReplyGUI(*) {
+    Log("-- Enter Pre-OP Message Centre Reply GUI --", 1)
+    EmailReplyGUI := BuildGui("Enter Pre-Op Message Centre Reply")
     EmailReplyGUI.AddText("", "Reply")
     EmailReplyGUI.AddDropDownList("w300 Choose1 vReply", [
         "APPROVED - Booked",
@@ -32,7 +32,7 @@ EmailReplyGUI(*) {
         Send(Intro "`n" "`n")
 
         if fields.Reply = "APPROVED - Booked"
-            Send("This Pre-Op assessment has been booked.")
+            Send("This pre-op assessment has been booked.")
 
         if fields.Reply = "DENIED - No Surgical Pathway / Triage"
             Send("This request hasn't been actioned as there is no Surgical Pathway and/or Triage for this patient. Please resubmit this request once this criteria has been filled")
@@ -41,12 +41,8 @@ EmailReplyGUI(*) {
             Send("This request hasn't been actioned as the Surgical Pathway and Triage for this patient has expired. Please resubmit this request once a new surgical order / surgical pathway has been made.")
 
         if fields.Reply = "DENIED - Not Our Speciality"
-            Send("This request hasn't been actioned as we are unable to book for this speciality. Please resubmit this request to the proper team." )
+            Send("This request hasn't been actioned as we are unable to book for this speciality. Please resubmit this request to the proper team.")
 
-        
+
     }
 }
-
-
-
-
